@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiyi.vestation.mapper.VxUserMapper">
+
+<!--    插入或更新用户-->
+    <select id="insertOrUpdateByOpenid">
+        insert into vx_user(openid, nick_name, user_avatar_url)
+        values(#{openid}, #{nickName}, #{userAvatarUrl})
+        on duplicate key update
+        nick_name=#{nickName}, user_avatar_url=#{userAvatarUrl}
+    </select>
+
+</mapper>
