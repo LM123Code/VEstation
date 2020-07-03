@@ -2,6 +2,8 @@ package com.zhiyi.vestation.mapper;
 
 import com.zhiyi.vestation.pojo.VxUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author ${author}
  * @since 2020-07-01
  */
+@Mapper
 public interface VxUserMapper extends BaseMapper<VxUser> {
 
     /**
