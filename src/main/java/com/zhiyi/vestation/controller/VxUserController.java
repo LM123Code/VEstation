@@ -3,8 +3,10 @@ package com.zhiyi.vestation.controller;
 
 import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -18,7 +20,7 @@ import java.util.Map;
  * @since 2020-07-01
  */
 @RestController
-@RequestMapping("/vestation/vx-user")
+@RequestMapping("${api-url}/vx-user")
 public class VxUserController {
 
     @Autowired
@@ -34,6 +36,8 @@ public class VxUserController {
      * @param nickName 昵称
      * @return
      */
+    @ResponseBody //将返回对象转化为json数据，写入response对象的body区
+    @PostMapping("/login") //访问路径
     public Map<String, String> login(String appid, String secret,String js_code, String userAvatarUrl, String nickName){
         return vxUserService.login(appid, secret, js_code, userAvatarUrl, nickName);
     }
