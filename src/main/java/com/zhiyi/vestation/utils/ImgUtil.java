@@ -25,14 +25,14 @@ import java.util.UUID;
 public class ImgUtil {
 
     // 设置好账号的ACCESS_KEY和SECRET_KEY
-    private static final String ACCESS_KEY = "QT8AHgLHagGXsz-J1UslC4om2vXWK5WUKdjQkvKW";
-    private static final String SECRET_KEY = "-4u1S8LptBxUMSXdBmxVGhcQBZhUUzXA29yaSzk1";
+    private static final String ACCESS_KEY = "L-5Kq9EPN507_TujPf_5v-VOTAT7V7m3p_5VW1df";
+    private static final String SECRET_KEY = "-8vNTYcj8BR2wL6lsyr8a5Y81ttfgK3qJJ2CmtkY";
     // 要上传的空间
-    private static final String bucketname = "vestation";
+    private static final String bucketname = "zhichangbao";
     // 密钥配置
     private static final Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
     // 测试域名，只有30天有效期
-    private static final String QINIU_IMAGE_CDNS = "qcu0q65bu.bkt.clouddn.com";
+    private static final String QINIU_IMAGE_CDNS = "qcu6llba8.bkt.clouddn.com";
     private static final Configuration cfg = new Configuration(Zone.zone2());//设置空间上传域名
 
     /**
