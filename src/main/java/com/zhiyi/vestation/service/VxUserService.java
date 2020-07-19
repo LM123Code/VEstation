@@ -26,4 +26,10 @@ public interface VxUserService extends IService<VxUser> {
      * @return
      */
     Map<String, String> login(String appid, String secret, String js_code, String userAvatarUrl, String nickName);
+
+    /**
+     * 获取vxUser的指定属性
+     * @return vxUser对象
+     */
+    VxUser selectByWrapper(String openid);
 }

@@ -4,10 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhiyi.vestation.pojo.Job;
 import com.zhiyi.vestation.mapper.JobMapper;
+import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.JobService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhiyi.vestation.service.VxUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,6 +24,9 @@ import java.util.List;
  */
 @Service
 public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobService {
+
+    @Autowired
+    VxUserService vxUserService;
 
     /**
      * 首页工作推荐
@@ -37,7 +44,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        return baseMapper.selectPage(page, wrapper).getRecords(); //查询并获取记录
+        return addVxUser(baseMapper.selectPage(page, wrapper).getRecords()); //查询并获取记录
     }
 
     /**
@@ -57,6 +64,26 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        return baseMapper.selectPage(page, wrapper).getRecords(); //查询并获取记录
+        return addVxUser(baseMapper.selectPage(page, wrapper).getRecords()); //查询并获取记录
+    }
+
+    /**
+     * 为集合中的工作添加发布者的属性
+     * @param list 工作集合
+     * @return 较完整的岗位集合
+     */
+    @Override
+    public List<Job> addVxUser(List<Job> list) {
+        HashMap<String, VxUser> map = new HashMap<>(); //存储需要的vxUser
+        for (Job job:list) {
+            String openid = job.getOpenid(); //获取当前岗位的发布者openid
+            VxUser vxUser = map.get(openid); //从map中获取vxUser
+            if(vxUser != null){ //不存在就进行查询
+                vxUser = vxUserService.selectByWrapper(openid);
+                map.put(openid, vxUser); //加入map
+            }
+            job.setVxUser(vxUser); //为每个岗位设置发布者信息
+        }
+        return list; //返回岗位列表
     }
 }

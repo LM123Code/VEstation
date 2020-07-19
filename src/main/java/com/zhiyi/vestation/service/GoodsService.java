@@ -27,4 +27,11 @@ public interface GoodsService extends IService<Goods> {
      * @return 商品列表
      */
     List<Goods> getAllGoodsInPage(int p);
+
+    /**
+     * 为集合中的商品添加发布者的属性
+     * @param list 商品集合
+     * @return 较完整的商品集合
+     */
+    List<Goods> addVxUser(List<Goods> list);
 }

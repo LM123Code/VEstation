@@ -27,4 +27,11 @@ public interface RoomService extends IService<Room> {
      * @return room列表
      */
     List<Room> getAllRoomsInPage(int p);
+
+    /**
+     * 为集合中的租房添加发布者的属性
+     * @param list 租房集合
+     * @return 较完整的租房集合
+     */
+    List<Room> addVxUser(List<Room> list);
 }
