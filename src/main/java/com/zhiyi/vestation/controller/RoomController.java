@@ -4,10 +4,7 @@ import com.zhiyi.vestation.pojo.Room;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -54,7 +51,7 @@ public class RoomController {
      * @return
      */
     @ResponseBody
-    @GetMapping("/room")
+    @PostMapping("/room")
     public Room getRoomById(int id){
         return roomService.getById(id);
     }

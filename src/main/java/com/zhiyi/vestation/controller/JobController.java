@@ -5,11 +5,7 @@ import com.zhiyi.vestation.pojo.Job;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -68,7 +64,7 @@ public class JobController {
      * @return
      */
     @ResponseBody
-    @GetMapping("/uploadJob")
+    @PostMapping("/uploadJob")
     public Status uploadJob(Job job){
         boolean code = jobService.save(job);
         return new Status(code==true?200:0, "发布职位成功");

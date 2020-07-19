@@ -3,8 +3,12 @@ package com.zhiyi.vestation.pojo;
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -15,6 +19,7 @@ import java.io.Serializable;
  * @author ${author}
  * @since 2020-07-08
  */
+@Data
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -87,126 +92,9 @@ public class Room implements Serializable {
     private Boolean exist;
 
 
-    public Integer getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
-    }
-
-    public String getRoomTitle() {
-        return roomTitle;
-    }
-
-    public void setRoomTitle(String roomTitle) {
-        this.roomTitle = roomTitle;
-    }
-
-    public String getRootDesc() {
-        return rootDesc;
-    }
-
-    public void setRootDesc(String rootDesc) {
-        this.rootDesc = rootDesc;
-    }
-
-    public BigDecimal getRoomPrise() {
-        return roomPrise;
-    }
-
-    public void setRoomPrise(BigDecimal roomPrise) {
-        this.roomPrise = roomPrise;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getRoomUrls() {
-        return roomUrls;
-    }
-
-    public void setRoomUrls(String roomUrls) {
-        this.roomUrls = roomUrls;
-    }
-
-    public Integer getRoomArea() {
-        return roomArea;
-    }
-
-    public void setRoomArea(Integer roomArea) {
-        this.roomArea = roomArea;
-    }
-
-    public String getRoomClass() {
-        return roomClass;
-    }
-
-    public void setRoomClass(String roomClass) {
-        this.roomClass = roomClass;
-    }
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public Integer getViews() {
-        return views;
-    }
-
-    public void setViews(Integer views) {
-        this.views = views;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public Boolean getExist() {
-        return exist;
-    }
-
-    public void setExist(Boolean exist) {
-        this.exist = exist;
-    }
-
-    @Override
-    public String toString() {
-        return "Room{" +
-        "roomId=" + roomId +
-        ", roomTitle=" + roomTitle +
-        ", rootDesc=" + rootDesc +
-        ", roomPrise=" + roomPrise +
-        ", createDate=" + createDate +
-        ", address=" + address +
-        ", roomUrls=" + roomUrls +
-        ", roomArea=" + roomArea +
-        ", roomClass=" + roomClass +
-        ", openid=" + openid +
-        ", views=" + views +
-        ", score=" + score +
-        ", exist=" + exist +
-        "}";
-    }
+    /**
+     * 发布者
+     */
+    @TableField(exist = false) //数据库不存在的字段
+    private VxUser vxUser;
 }
