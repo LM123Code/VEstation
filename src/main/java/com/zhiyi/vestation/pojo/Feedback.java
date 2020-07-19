@@ -1,5 +1,8 @@
 package com.zhiyi.vestation.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -11,6 +14,7 @@ import java.io.Serializable;
  * @author ${author}
  * @since 2020-07-08
  */
+@Data
 public class Feedback implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,63 +50,9 @@ public class Feedback implements Serializable {
     private Boolean exit;
 
 
-    public Integer getFeedbackId() {
-        return feedbackId;
-    }
-
-    public void setFeedbackId(Integer feedbackId) {
-        this.feedbackId = feedbackId;
-    }
-
-    public Boolean getFeedClass() {
-        return feedClass;
-    }
-
-    public void setFeedClass(Boolean feedClass) {
-        this.feedClass = feedClass;
-    }
-
-    public String getFeedContent() {
-        return feedContent;
-    }
-
-    public void setFeedContent(String feedContent) {
-        this.feedContent = feedContent;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Boolean getLook() {
-        return look;
-    }
-
-    public void setLook(Boolean look) {
-        this.look = look;
-    }
-
-    public Boolean getExit() {
-        return exit;
-    }
-
-    public void setExit(Boolean exit) {
-        this.exit = exit;
-    }
-
-    @Override
-    public String toString() {
-        return "Feedback{" +
-        "feedbackId=" + feedbackId +
-        ", feedClass=" + feedClass +
-        ", feedContent=" + feedContent +
-        ", createDate=" + createDate +
-        ", look=" + look +
-        ", exit=" + exit +
-        "}";
-    }
+    /**
+     * 发布者
+     */
+    @TableField(exist = false) //数据库不存在的字段
+    private VxUser vxUser;
 }

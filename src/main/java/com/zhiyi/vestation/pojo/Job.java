@@ -3,8 +3,12 @@ package com.zhiyi.vestation.pojo;
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -15,6 +19,7 @@ import java.io.Serializable;
  * @author ${author}
  * @since 2020-07-08
  */
+@Data
 public class Job implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -97,144 +102,9 @@ public class Job implements Serializable {
     private Boolean exist;
 
 
-    public Integer getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Integer jobId) {
-        this.jobId = jobId;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public String getJobClass() {
-        return jobClass;
-    }
-
-    public void setJobClass(String jobClass) {
-        this.jobClass = jobClass;
-    }
-
-    public String getJobDesc() {
-        return jobDesc;
-    }
-
-    public void setJobDesc(String jobDesc) {
-        this.jobDesc = jobDesc;
-    }
-
-    public BigDecimal getJobPrise() {
-        return jobPrise;
-    }
-
-    public void setJobPrise(BigDecimal jobPrise) {
-        this.jobPrise = jobPrise;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Integer getViews() {
-        return views;
-    }
-
-    public void setViews(Integer views) {
-        this.views = views;
-    }
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getResumeFormat() {
-        return resumeFormat;
-    }
-
-    public void setResumeFormat(String resumeFormat) {
-        this.resumeFormat = resumeFormat;
-    }
-
-    public String getWechat() {
-        return wechat;
-    }
-
-    public void setWechat(String wechat) {
-        this.wechat = wechat;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public Boolean getExist() {
-        return exist;
-    }
-
-    public void setExist(Boolean exist) {
-        this.exist = exist;
-    }
-
-    @Override
-    public String toString() {
-        return "Job{" +
-        "jobId=" + jobId +
-        ", jobTitle=" + jobTitle +
-        ", jobClass=" + jobClass +
-        ", jobDesc=" + jobDesc +
-        ", jobPrise=" + jobPrise +
-        ", createDate=" + createDate +
-        ", companyName=" + companyName +
-        ", address=" + address +
-        ", views=" + views +
-        ", openid=" + openid +
-        ", email=" + email +
-        ", resumeFormat=" + resumeFormat +
-        ", wechat=" + wechat +
-        ", score=" + score +
-        ", exist=" + exist +
-        "}";
-    }
+    /**
+     * 发布者
+     */
+    @TableField(exist = false) //数据库不存在的字段
+    private VxUser vxUser;
 }

@@ -2,7 +2,11 @@ package com.zhiyi.vestation.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -13,6 +17,7 @@ import java.io.Serializable;
  * @author ${author}
  * @since 2020-07-08
  */
+@Data
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,90 +69,9 @@ public class Comment implements Serializable {
     private Boolean exit;
 
 
-    public Integer getCommetId() {
-        return commetId;
-    }
-
-    public void setCommetId(Integer commetId) {
-        this.commetId = commetId;
-    }
-
-    public String getCommentOpenid() {
-        return commentOpenid;
-    }
-
-    public void setCommentOpenid(String commentOpenid) {
-        this.commentOpenid = commentOpenid;
-    }
-
-    public Integer getCommentClass() {
-        return commentClass;
-    }
-
-    public void setCommentClass(Integer commentClass) {
-        this.commentClass = commentClass;
-    }
-
-    public Integer getForumId() {
-        return forumId;
-    }
-
-    public void setForumId(Integer forumId) {
-        this.forumId = forumId;
-    }
-
-    public String getReplyId() {
-        return replyId;
-    }
-
-    public void setReplyId(String replyId) {
-        this.replyId = replyId;
-    }
-
-    public String getCommentContent() {
-        return commentContent;
-    }
-
-    public void setCommentContent(String commentContent) {
-        this.commentContent = commentContent;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Boolean getLook() {
-        return look;
-    }
-
-    public void setLook(Boolean look) {
-        this.look = look;
-    }
-
-    public Boolean getExit() {
-        return exit;
-    }
-
-    public void setExit(Boolean exit) {
-        this.exit = exit;
-    }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-        "commetId=" + commetId +
-        ", commentOpenid=" + commentOpenid +
-        ", commentClass=" + commentClass +
-        ", forumId=" + forumId +
-        ", replyId=" + replyId +
-        ", commentContent=" + commentContent +
-        ", createDate=" + createDate +
-        ", look=" + look +
-        ", exit=" + exit +
-        "}";
-    }
+    /**
+     * 发布者
+     */
+    @TableField(exist = false) //数据库不存在的字段
+    private VxUser vxUser;
 }
