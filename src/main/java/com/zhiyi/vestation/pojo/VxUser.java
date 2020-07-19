@@ -1,5 +1,7 @@
 package com.zhiyi.vestation.pojo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -10,6 +12,7 @@ import java.io.Serializable;
  * @author ${author}
  * @since 2020-07-01
  */
+@Data
 public class VxUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,6 +47,9 @@ public class VxUser implements Serializable {
      */
     private String companyName;
 
+    /**
+     * 公司认证工作证图片
+     */
     private String companyUrl;
 
     /**
@@ -56,6 +62,9 @@ public class VxUser implements Serializable {
      */
     private String schoolName;
 
+    /**
+     *学校认证学生证图片
+     */
     private String schoolUrl;
 
     /**
@@ -83,145 +92,18 @@ public class VxUser implements Serializable {
      */
     private String roomIds;
 
+    /**
+     * 公司认证，0未认证，1已认证,2未审核，3审核通过，4审核未通过
+     */
+    private Integer companyExit;
 
-    public String getOpenid() {
-        return openid;
-    }
+    /**
+     * 学校认证，0未认证，1已认证，2未审核，3审核通过，4审核未通过
+     */
+    private Integer schoolExit;
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getUserAvatarUrl() {
-        return userAvatarUrl;
-    }
-
-    public void setUserAvatarUrl(String userAvatarUrl) {
-        this.userAvatarUrl = userAvatarUrl;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getWechat() {
-        return wechat;
-    }
-
-    public void setWechat(String wechat) {
-        this.wechat = wechat;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getCompanyUrl() {
-        return companyUrl;
-    }
-
-    public void setCompanyUrl(String companyUrl) {
-        this.companyUrl = companyUrl;
-    }
-
-    public String getProfession() {
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-        this.profession = profession;
-    }
-
-    public String getSchoolName() {
-        return schoolName;
-    }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
-    }
-
-    public String getSchoolUrl() {
-        return schoolUrl;
-    }
-
-    public void setSchoolUrl(String schoolUrl) {
-        this.schoolUrl = schoolUrl;
-    }
-
-    public Boolean getSex() {
-        return sex;
-    }
-
-    public void setSex(Boolean sex) {
-        this.sex = sex;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getGoodsIds() {
-        return goodsIds;
-    }
-
-    public void setGoodsIds(String goodsIds) {
-        this.goodsIds = goodsIds;
-    }
-
-    public String getJobIds() {
-        return jobIds;
-    }
-
-    public void setJobIds(String jobIds) {
-        this.jobIds = jobIds;
-    }
-
-    public String getRoomIds() {
-        return roomIds;
-    }
-
-    public void setRoomIds(String roomIds) {
-        this.roomIds = roomIds;
-    }
-
-    @Override
-    public String toString() {
-        return "VxUser{" +
-        "openid=" + openid +
-        ", nickName=" + nickName +
-        ", userAvatarUrl=" + userAvatarUrl +
-        ", phoneNumber=" + phoneNumber +
-        ", wechat=" + wechat +
-        ", companyName=" + companyName +
-        ", companyUrl=" + companyUrl +
-        ", profession=" + profession +
-        ", schoolName=" + schoolName +
-        ", schoolUrl=" + schoolUrl +
-        ", sex=" + sex +
-        ", address=" + address +
-        ", goodsIds=" + goodsIds +
-        ", jobIds=" + jobIds +
-        ", roomIds=" + roomIds +
-        "}";
-    }
+    /**
+     * 是否存在，1存在，0不存在
+     */
+    private Boolean exit;
 }

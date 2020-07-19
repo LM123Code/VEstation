@@ -34,7 +34,7 @@ class VestationApplicationTests {
      */
     @Test
     void testDelImg(){
-        System.out.println(ImgUtil.delete("93032346-4e13-40f9-91d3-d1854345bece"));
+        System.out.println(ImgUtil.delete("440eed2b-2f6e-49d6-9e84-2aeb315170bb"));
     }
 
 }

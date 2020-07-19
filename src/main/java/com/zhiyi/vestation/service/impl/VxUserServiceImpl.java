@@ -62,7 +62,7 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         String openid = (String) json.get("openid");
 
 //        插入或更新用户
-        int status = vxUserMapper.insertOrUpdateByOpenid(openid, nickName, userAvatarUrl);
+        int status = baseMapper.insertOrUpdateByOpenid(openid, nickName, userAvatarUrl);
 
 
         map.put("status", status); //登录成功status为1，失败为0

@@ -43,7 +43,7 @@ public class  CodeGenerate {
         pc.setEntity("pojo");
         //4.策略配置值
         StrategyConfig sc = new StrategyConfig();
-        sc.setInclude("vx_user");     //这里设置逆向工程的表
+        sc.setInclude("comment","feedback","forum","goods","job","like","manager","room","system_msg");     //这里设置逆向工程的表
         sc.setNaming(NamingStrategy.underline_to_camel);  //开启类名驼峰命名
         sc.setColumnNaming(NamingStrategy.underline_to_camel); //属性名驼峰命名
         sc.setLogicDeleteFieldName("exist"); //设置逻辑删除
