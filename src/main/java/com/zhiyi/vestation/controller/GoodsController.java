@@ -5,10 +5,7 @@ import com.zhiyi.vestation.pojo.Goods;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -66,7 +63,7 @@ public class GoodsController {
      * @return
      */
     @ResponseBody
-    @GetMapping("/uploadGoods")
+    @PostMapping("/uploadGoods")
     public Status uploadGoods(Goods goods){
         boolean code = goodsService.save(goods);
         return new Status(code==true?200:0, "发布商品成功");

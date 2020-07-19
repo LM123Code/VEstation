@@ -1,5 +1,9 @@
 package com.zhiyi.vestation.service;
 
+import com.zhiyi.vestation.pojo.Status;
+
+import java.io.IOException;
+
 /**
  * <p>
  *  服务类
@@ -10,4 +14,18 @@ package com.zhiyi.vestation.service;
  */
 public interface ImageService {
 
+    /**
+     * 上传图片
+     * @param image  图片二进制数据
+     * @return 返回status查看状态
+     * @throws IOException
+     */
+    Status uploadImage(byte[] image);
+
+    /**
+     * 删除图片
+     * @param key 图片名称
+     * @return 返回status状态
+     */
+    Status delImage(String key);
 }

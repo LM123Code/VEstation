@@ -39,7 +39,7 @@ public class ImgUtil {
      * 获取上传凭证
      * @return
      */
-    public static String getUpToken() {
+    private static String getUpToken() {
         return auth.uploadToken(bucketname, null, 3600, new StringMap().put("insertOnly", 1));
     }
 
