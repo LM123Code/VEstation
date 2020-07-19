@@ -39,9 +39,11 @@ public class TransactionAdviceConfig {
 
         NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
         source.addTransactionalMethod("add*", txAttr_REQUIRED);
+        source.addTransactionalMethod("upload*", txAttr_REQUIRED);
         source.addTransactionalMethod("save*", txAttr_REQUIRED);
         source.addTransactionalMethod("insert*", txAttr_REQUIRED);
         source.addTransactionalMethod("delete*", txAttr_REQUIRED);
+        source.addTransactionalMethod("del*", txAttr_REQUIRED);
         source.addTransactionalMethod("update*", txAttr_REQUIRED);
         source.addTransactionalMethod("exec*", txAttr_REQUIRED);
         source.addTransactionalMethod("set*", txAttr_REQUIRED);
