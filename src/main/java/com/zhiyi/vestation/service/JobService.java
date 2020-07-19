@@ -27,4 +27,11 @@ public interface JobService extends IService<Job> {
      * @return job列表
      */
     List<Job> getAllJobsInPage(int p);
+
+    /**
+     * 为集合中的工作添加发布者的属性
+     * @param list 工作集合
+     * @return 较完整的岗位集合
+     */
+    List<Job> addVxUser(List<Job> list);
 }

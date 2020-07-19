@@ -1,5 +1,6 @@
 package com.zhiyi.vestation.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.mapper.VxUserMapper;
 import com.zhiyi.vestation.service.VxUserService;
@@ -69,5 +70,18 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         map.put("openid",openid);
 
         return map;
+    }
+
+    /**
+     * 获取vxUser的指定属性
+     * @return vxUser对象
+     */
+    @Override
+    public VxUser selectByWrapper(String openid) {
+        QueryWrapper<VxUser> wrapper = new QueryWrapper<>();
+        wrapper.select("openid", "nick_name", "user_avatar_url", "company_exit", "school_exit").eq("openid", openid);
+
+        return baseMapper.selectById(wrapper);
+
     }
 }
