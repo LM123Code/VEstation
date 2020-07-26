@@ -5,9 +5,11 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -73,7 +75,8 @@ public class Forum implements Serializable {
     /**
      * 是否存在，1存在，0不存在
      */
-    private Boolean exit;
+    @TableLogic
+    private Boolean exist;
 
 
     /**
@@ -81,4 +84,11 @@ public class Forum implements Serializable {
      */
     @TableField(exist = false) //数据库不存在的字段
     private VxUser vxUser;
+
+
+    /**
+     * 评论
+     */
+    @TableField(exist =  false)
+    private List<Comment> comments;
 }

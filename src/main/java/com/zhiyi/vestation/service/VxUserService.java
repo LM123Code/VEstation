@@ -1,5 +1,6 @@
 package com.zhiyi.vestation.service;
 
+import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -32,4 +33,13 @@ public interface VxUserService extends IService<VxUser> {
      * @return vxUser对象
      */
     VxUser selectByWrapper(String openid);
+
+    /**
+     * 收藏帖子
+     * @param openid   用户标识
+     * @param forumId  帖子标识
+     * @param forumType  帖子类型
+     * @return
+     */
+    public Status collectForum(String openid, int forumId, int forumType);
 }

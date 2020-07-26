@@ -1,11 +1,13 @@
 package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.mapper.VxUserMapper;
 import com.zhiyi.vestation.service.VxUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhiyi.vestation.utils.HttpRequest;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -77,11 +79,54 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
      * @return vxUser对象
      */
     @Override
-    public VxUser selectByWrapper(String openid) {
+    public VxUser selectByWrapper(@Param("openid") String openid) {
         QueryWrapper<VxUser> wrapper = new QueryWrapper<>();
-        wrapper.select("openid", "nick_name", "user_avatar_url", "company_exit", "school_exit").eq("openid", openid);
-
-        return baseMapper.selectById(wrapper);
+        wrapper.select("nick_name", "user_avatar_url", "company_exit", "school_exit").eq("openid",openid);
+        return baseMapper.selectOne(wrapper);
 
     }
+
+    /**
+     *收藏帖子
+     * @param openid   用户标识
+     * @param forumId  帖子标识
+     * @param forumType  帖子类型
+     * @return
+     */
+    @Override
+    public Status collectForum(String openid, int forumId, int forumType) {
+        /*Boolean bool = false; //收藏标志  收藏成功之后会将其改为true
+        VxUser vxUser = baseMapper.selectById(openid);
+        System.out.println("用户信息查询"+vxUser);
+        if(forumType == 1) {
+            String goodsIds = vxUser.getGoodsIds();
+            if(goodsIds.equals("")) {
+                vxUser.setGoodsIds(""+forumId);
+            }else {
+                vxUser.setGoodsIds(goodsIds + "," + forumId);
+            }
+            bool = saveOrUpdate(vxUser);  //保存或更新
+        }else if(forumType == 2) {
+            String roomIds = vxUser.getRoomIds();
+            if(roomIds.equals("")) {
+                vxUser.setGoodsIds(""+forumId);
+            }else {
+                vxUser.setRoomIds(roomIds + "," + forumId);
+            }
+            bool = saveOrUpdate(vxUser);  //保存或更新
+        }else {
+            String jobIds = vxUser.getJobIds();
+            if(jobIds.equals("")) {
+                vxUser.setJobIds(""+forumId);
+            }else {
+                vxUser.setGoodsIds(vxUser.getJobIds() + "," + forumId);
+            }
+            bool = saveOrUpdate(vxUser);  //保存或更新
+        }
+        return new Status(bool == true? 200:0, bool == true? "收藏成功": "收藏失败");*/
+        System.out.println("为啥查不出来"+baseMapper.selectById(openid));
+        return null;
+    }
+
+
 }

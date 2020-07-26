@@ -1,9 +1,11 @@
 package com.zhiyi.vestation;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@MapperScan(value = "com.zhiyi.vestation.mapper")
 public class VestationApplication {
 
     

@@ -1,13 +1,10 @@
 package com.zhiyi.vestation.controller;
 
 
+import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -42,5 +39,16 @@ public class VxUserController {
         return vxUserService.login(appid, secret, js_code, userAvatarUrl, nickName);
     }
 
+    /**
+     * 收藏帖子
+     * @param openid  用户openid
+     * @param forumId   帖子id
+     * @param forumType  帖子类型
+     * @return
+     */
+    @GetMapping("/collect")
+    public Status collectForum(String openid, int forumId, int forumType) {
+        return vxUserService.collectForum(openid,forumId,forumType);
+    }
 }
 

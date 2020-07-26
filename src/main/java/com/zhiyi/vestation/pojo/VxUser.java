@@ -105,5 +105,5 @@ public class VxUser implements Serializable {
     /**
      * 是否存在，1存在，0不存在
      */
-    private Boolean exit;
+    private Boolean exist;
 }
