@@ -59,15 +59,15 @@ public class JobController {
     }
 
     /**
-     * 发布职位
+     * 发布或更新职位
      * @param job 职位对象
      * @return
      */
     @ResponseBody
     @PostMapping("/uploadJob")
     public Status uploadJob(Job job){
-        boolean code = jobService.save(job);
-        return new Status(code==true?200:0, "发布职位成功");
+        boolean b = jobService.saveOrUpdate(job);
+        return b?new Status(200, "成功"):new Status(0, "失败");
     }
 }
 

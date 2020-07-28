@@ -58,15 +58,15 @@ public class GoodsController {
     }
 
     /**
-     * 发布商品
+     * 发布或更新商品
      * @param goods 商品对象
      * @return
      */
     @ResponseBody
     @PostMapping("/uploadGoods")
     public Status uploadGoods(Goods goods){
-        boolean code = goodsService.save(goods);
-        return new Status(code==true?200:0, "发布商品成功");
+        boolean b = goodsService.saveOrUpdate(goods);
+        return b?new Status(200, "成功"):new Status(0, "失败");
     }
 }
 

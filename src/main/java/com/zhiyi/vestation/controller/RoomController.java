@@ -57,15 +57,15 @@ public class RoomController {
     }
 
     /**
-     * 发布房子
+     * 发布或更新房子
      * @param room 房子对象
      * @return
      */
     @ResponseBody
     @GetMapping("/uploadRoom")
     public Status uploadRoom(Room room){
-        boolean code = roomService.save(room);
-        return new Status(code==true?200:0, "发布商品成功");
+        boolean b = roomService.save(room);
+        return b?new Status(200, "成功"):new Status(0, "失败");
     }
 }
 
