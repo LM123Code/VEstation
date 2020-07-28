@@ -48,7 +48,7 @@ public class Job implements Serializable {
     /**
      * 价格
      */
-    private BigDecimal jobPrise;
+    private BigDecimal jobPrice;
 
     /**
      * 发布时间

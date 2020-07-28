@@ -48,7 +48,7 @@ public class Goods implements Serializable {
     /**
      * 价格
      */
-    private BigDecimal goodsPrise;
+    private BigDecimal goodsPrice;
 
     /**
      * 发布地址

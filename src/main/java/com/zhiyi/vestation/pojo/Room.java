@@ -43,7 +43,7 @@ public class Room implements Serializable {
     /**
      * 价格
      */
-    private BigDecimal roomPrise;
+    private BigDecimal roomPrice;
 
     /**
      * 发布时间
