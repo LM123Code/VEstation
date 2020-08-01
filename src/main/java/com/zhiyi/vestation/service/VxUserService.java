@@ -42,4 +42,12 @@ public interface VxUserService extends IService<VxUser> {
      * @return
      */
     public Status collectForum(String openid, int forumId, int forumType);
+
+    /**
+     * 根据openid 和forumType查询出某个用户收藏的某种帖子
+     * @param openid
+     * @param forumType
+     * @return
+     */
+    public String selectCollect(String openid, int forumType);
 }

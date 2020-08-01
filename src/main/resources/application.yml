@@ -32,3 +32,6 @@ mybatis-plus:
 #  config-location: classpath:mybatis/mybatis-config.xml #指定mybatis-plus其他具体配置的路径
   type-aliases-package: com.zhiyi.vestation.pojo #实体类文件
 api-url: /ve #系统访问的根路径
+logging:
+  level:
+    com.zhiyi.vestation.mapper: debug

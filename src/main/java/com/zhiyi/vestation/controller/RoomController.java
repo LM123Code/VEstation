@@ -41,7 +41,6 @@ public class RoomController {
     @ResponseBody
     @GetMapping("/allRooms")
     public List<Room> getAllRoomsInPage(int p){
-
         return roomService.getAllRoomsInPage(p);
     }
 

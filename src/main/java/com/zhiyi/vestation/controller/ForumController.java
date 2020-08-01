@@ -30,12 +30,14 @@ public class ForumController {
 
     /**
      * 通过forum_type查询帖子使用在动态页
-     * @param forum_type  帖子分类
+     * @param forumType  帖子分类
+     * @param openid 用户id 用来查询该用户是否点赞过这些帖子
+     * @param  page  分页页码
      * @return
      */
     @GetMapping("/dongtai")
-    public List<Forum> selectForumByCateId(int forum_type,int page) {
-        List<Forum> forums = forumService.selectForumByCateId(forum_type,page);
+    public List<Forum> selectForumByCateId(String openid, int forumType, int page) {
+        List<Forum> forums = forumService.selectForumByCateId(openid, forumType, page);
         return forums;
     }
     @GetMapping("/delete")

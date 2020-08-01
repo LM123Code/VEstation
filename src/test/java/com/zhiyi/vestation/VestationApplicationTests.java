@@ -11,13 +11,13 @@ import java.nio.file.Files;
 @SpringBootTest
 class VestationApplicationTests {
 
-    @Test
+   /* @Test
     void contextLoads() {
     }
 
-    /**
+    *//**
      * 图片上传测试
-     */
+     *//*
     @Test
     void testUploadImg(){
         File file = new File("F:\\我的文件\\照片\\二寸红.jpg");
@@ -29,12 +29,12 @@ class VestationApplicationTests {
         }
     }
 
-    /**
+    *//**
      * 图片删除测试
-     */
+     *//*
     @Test
     void testDelImg(){
         System.out.println(ImgUtil.delete("440eed2b-2f6e-49d6-9e84-2aeb315170bb"));
-    }
+    }*/
 
 }

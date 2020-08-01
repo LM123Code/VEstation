@@ -1,13 +1,17 @@
 package com.zhiyi.vestation.pojo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.elasticsearch.annotations.Field;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -46,7 +50,8 @@ public class Comment implements Serializable {
     /**
      * 评论的级别   为-1为一级评论，其他为回复的openid
      */
-    private String replyId;
+
+    private String replyId = "-1";
 
     /**
      * 评论或回复的内容
@@ -56,6 +61,7 @@ public class Comment implements Serializable {
     /**
      * 评论或者回复的时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date createDate;
 
     /**
@@ -68,10 +74,21 @@ public class Comment implements Serializable {
      */
     private Boolean exist;
 
+    /**
+     * 帖子发布者的openid
+     */
+    private String publishOpenid;
+
 
     /**
-     * 发布者
+     * 发布者信息
      */
     @TableField(exist = false) //数据库不存在的字段
     private VxUser vxUser;
+
+    /**
+     * 下级评论
+     */
+    @TableField(exist = false)
+    private List<Comment> children;
 }

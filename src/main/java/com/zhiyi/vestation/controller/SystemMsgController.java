@@ -1,9 +1,13 @@
 package com.zhiyi.vestation.controller;
 
 
+import com.zhiyi.vestation.pojo.SystemMsg;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,8 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-07-08
  */
 @RestController
-@RequestMapping("/vestation/system-msg")
+@RequestMapping("${api-url}/system-msg")
 public class SystemMsgController {
 
+    @GetMapping("/selectMessage")
+    public List<SystemMsg> selectMessage() {
+      return null;
+    }
 }
 

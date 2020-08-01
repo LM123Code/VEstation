@@ -91,4 +91,16 @@ public class Forum implements Serializable {
      */
     @TableField(exist =  false)
     private List<Comment> comments;
+
+    /**
+     * 是否被点攒状态
+     */
+    @TableField(exist =  false)
+    private Boolean likeStatus;
+
+    /**
+     * 是否被收藏状态
+     */
+    @TableField(exist = false)
+    private Boolean collectStatus;
 }

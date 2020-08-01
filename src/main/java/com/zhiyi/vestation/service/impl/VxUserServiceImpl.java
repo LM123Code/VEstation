@@ -1,6 +1,7 @@
 package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.mapper.VxUserMapper;
@@ -95,38 +96,78 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
      */
     @Override
     public Status collectForum(String openid, int forumId, int forumType) {
-        /*Boolean bool = false; //收藏标志  收藏成功之后会将其改为true
-        VxUser vxUser = baseMapper.selectById(openid);
-        System.out.println("用户信息查询"+vxUser);
+       boolean bool = false; //收藏标志  收藏成功之后会将其改为true
+       int update = -1;
+       VxUser vxUser = null;
+
         if(forumType == 1) {
+            vxUser = selectUserUtil(openid, "goods_ids");
             String goodsIds = vxUser.getGoodsIds();
             if(goodsIds.equals("")) {
                 vxUser.setGoodsIds(""+forumId);
             }else {
                 vxUser.setGoodsIds(goodsIds + "," + forumId);
             }
-            bool = saveOrUpdate(vxUser);  //保存或更新
         }else if(forumType == 2) {
+            vxUser = selectUserUtil(openid, "room_ids");
             String roomIds = vxUser.getRoomIds();
-            if(roomIds.equals("")) {
-                vxUser.setGoodsIds(""+forumId);
+            if(roomIds == null) {
+                vxUser.setGoodsIds("" + forumId);
             }else {
-                vxUser.setRoomIds(roomIds + "," + forumId);
+                vxUser.setRoomIds(roomIds + "," + forumId);  //,2,3,6
             }
-            bool = saveOrUpdate(vxUser);  //保存或更新
         }else {
+            vxUser = selectUserUtil(openid, "job_ids");
             String jobIds = vxUser.getJobIds();
-            if(jobIds.equals("")) {
+            if(jobIds == null) {
                 vxUser.setJobIds(""+forumId);
             }else {
                 vxUser.setGoodsIds(vxUser.getJobIds() + "," + forumId);
             }
-            bool = saveOrUpdate(vxUser);  //保存或更新
         }
-        return new Status(bool == true? 200:0, bool == true? "收藏成功": "收藏失败");*/
-        System.out.println("为啥查不出来"+baseMapper.selectById(openid));
-        return null;
+        UpdateWrapper<VxUser> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("openid", openid);
+        update = baseMapper.update(vxUser, updateWrapper);
+        return update != 0?  new Status(200, "收藏成功"): new Status(0, "收藏失败");
     }
 
+    /**
+     * 根据openid和 forumType查询某个人收藏的某种帖子
+     * @param openid
+     * @param forumType
+     * @return
+     */
+    @Override
+    public String selectCollect(String openid, int forumType) {
+        VxUser vxUser = null;
+        if(forumType == 1) {
+           vxUser = selectLikeStatusUtil(openid, "goods_ids");
+           return vxUser.getGoodsIds() == null ?"" :vxUser.getGoodsIds();
+        }else if(forumType == 2) {
+            vxUser = selectLikeStatusUtil(openid, "room_ids");
+            return vxUser.getRoomIds() == null ?"" :vxUser.getRoomIds();
+        }else {
+            vxUser = selectLikeStatusUtil(openid, "job_ids");
+            return vxUser.getJobIds() == null ?"" :vxUser.getJobIds();
+        }
+    }
+
+    private VxUser selectLikeStatusUtil(String openid, String attrName) {
+        QueryWrapper<VxUser> collectWrapper = new QueryWrapper<>();
+        collectWrapper.select("openid", attrName).eq("openid", openid);
+        return baseMapper.selectOne(collectWrapper);
+    }
+    /**
+     * 收藏时的查询工具
+     * @param openid
+     * @param attrName
+     * @return
+     */
+    private VxUser selectUserUtil(String openid, String attrName) {
+        QueryWrapper<VxUser> userWrapper = new QueryWrapper<>();
+        userWrapper.select("openid", attrName).eq("openid",openid);
+        VxUser vxUser = baseMapper.selectOne(userWrapper);
+        return vxUser;
+    }
 
 }

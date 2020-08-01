@@ -1,6 +1,6 @@
 package com.zhiyi.vestation.mapper;
 
-import com.zhiyi.vestation.pojo.Like;
+import com.zhiyi.vestation.pojo.Star;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2020-07-08
  */
 @Mapper
-public interface LikeMapper extends BaseMapper<Like> {
+public interface LikeMapper extends BaseMapper<Star> {
 
 }
