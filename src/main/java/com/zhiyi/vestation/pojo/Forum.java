@@ -35,6 +35,9 @@ public class Forum implements Serializable {
      */
     private String forumTitle;
 
+    /**
+     * 帖子内容
+     */
     private String forumContent;
 
     /**
@@ -50,7 +53,7 @@ public class Forum implements Serializable {
     /**
      * 浏览量
      */
-    private Integer viewsNum;
+    private Integer views;
 
     /**
      * 点赞量
@@ -67,10 +70,6 @@ public class Forum implements Serializable {
      */
     private Integer commentNum;
 
-    /**
-     * 点赞数
-     */
-    private Integer likesNum;
 
     /**
      * 是否存在，1存在，0不存在
