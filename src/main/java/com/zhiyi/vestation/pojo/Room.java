@@ -31,12 +31,12 @@ public class Room implements Serializable {
     private Integer roomId;
 
     /**
-     * 职位标题
+     * 房子标题
      */
     private String roomTitle;
 
     /**
-     * 职位要求
+     * 房子描述
      */
     private String rootDesc;
 
@@ -70,6 +70,10 @@ public class Room implements Serializable {
      */
     private String roomClass;
 
+    /**
+     * 联系方式
+     */
+    private String contact;
     /**
      * 发布人
      */
