@@ -4,6 +4,7 @@ import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.elasticsearch.common.recycler.Recycler;
 
 import java.util.Map;
 
@@ -58,4 +59,11 @@ public interface VxUserService extends IService<VxUser> {
      * @return
      */
     public ResultStatus selectUserInfo(String openid);
+
+    /**
+     * 更新用户的信息
+     * @param vxUser
+     * @return
+     */
+    public ResultStatus updateUserInfo(VxUser vxUser);
 }

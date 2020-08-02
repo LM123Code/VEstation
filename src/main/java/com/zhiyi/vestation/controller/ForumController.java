@@ -40,8 +40,24 @@ public class ForumController {
     public ResultStatus selectForumByCateId(String openid, int forumType, int page) {
        return forumService.selectForumByCateId(openid, forumType, page);
     }
-    @GetMapping("/delete")
-    public int deleteForum(int forumId) {
+
+    /**
+     * 我的动态
+     * @param openid
+     * @return
+     */
+    @GetMapping("/myForum")
+    public ResultStatus selectMyForum(String openid, int page) {
+        return forumService.selectMyForum(openid, page);
+    }
+
+    /**
+     * 删除我的动态
+     * @param forumId
+     * @return
+     */
+    @GetMapping("/deleteForum")
+    public ResultStatus deleteForum(int forumId) {
        return forumService.deleteForum(forumId);
     }
 }

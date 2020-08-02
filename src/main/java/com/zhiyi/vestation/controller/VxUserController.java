@@ -3,6 +3,7 @@ package com.zhiyi.vestation.controller;
 
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
+import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,15 @@ public class VxUserController {
         return vxUserService.selectUserInfo(openid);
     }
 
+    /**
+     * 更新用户信息
+     * @param vxUser
+     * @return
+     */
+    @RequestMapping("/updateUserInfo")
+    public ResultStatus updateUserInfo(VxUser vxUser) {
+        return vxUserService.updateUserInfo(vxUser);
+    }
 
     /**
      * 收藏帖子
