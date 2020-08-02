@@ -2,6 +2,7 @@ package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Room;
 import com.zhiyi.vestation.mapper.RoomMapper;
 import com.zhiyi.vestation.pojo.VxUser;
@@ -33,7 +34,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
      * @return room的列表
      */
     @Override
-    public List<Room> getRecommendRooms() {
+    public ResultStatus getRecommendRooms() {
         QueryWrapper<Room> wrapper = new QueryWrapper<>(); //创建包装
         wrapper.eq("exist",1); //查询条件包装
 
@@ -45,7 +46,13 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
          * 应该从ES中查询，上述是从mysql查询
          */
 
-        return baseMapper.selectPage(page, wrapper).getRecords(); //查询并获取记录
+        List<Room> rooms = baseMapper.selectPage(page, wrapper).getRecords();//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (rooms == null || rooms.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setCode("200").setData(rooms).setMsg("ok");
+
     }
 
     /**
@@ -54,7 +61,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
      * @return room列表
      */
     @Override
-    public List<Room> getAllRoomsInPage(int p) {
+    public ResultStatus getAllRoomsInPage(int p) {
 
         QueryWrapper<Room> wrapper = new QueryWrapper<>(); //创建包装
         wrapper.eq("exist", 1); //查询条件包装
@@ -66,7 +73,14 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        return baseMapper.selectPage(page, wrapper).getRecords(); //查询并获取记录
+        List<Room> rooms = baseMapper.selectPage(page, wrapper).getRecords();//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setMsg("参数异常").setCode("0");
+        }else if (rooms == null || rooms.size() ==0) {
+            return resultStatus.setMsg("没有数据").setCode("1");
+        }
+        return resultStatus.setCode("200").setMsg("ok").setData(rooms);
     }
 
     /**
