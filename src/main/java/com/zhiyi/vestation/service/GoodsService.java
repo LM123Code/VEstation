@@ -2,6 +2,7 @@ package com.zhiyi.vestation.service;
 
 import com.zhiyi.vestation.pojo.Goods;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zhiyi.vestation.pojo.ResultStatus;
 
 import java.util.List;
 
@@ -19,14 +20,14 @@ public interface GoodsService extends IService<Goods> {
      * 获取首页商品推荐
      * @return Goods对象列表
      */
-    List<Goods> getRecommendGoods();
+    ResultStatus getRecommendGoods();
 
     /**
      * 获取去某一页的所有Goods
      * @param p 页码
      * @return 商品列表
      */
-    List<Goods> getAllGoodsInPage(int p);
+    ResultStatus getAllGoodsInPage(int p);
 
     /**
      * 为集合中的商品添加发布者的属性

@@ -2,6 +2,7 @@ package com.zhiyi.vestation.controller;
 
 
 import com.zhiyi.vestation.pojo.Ad;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class AdController {
      */
     @ResponseBody
     @GetMapping("/first-page")
-    public List<Ad> getFirstPageAd(){
+    public ResultStatus getFirstPageAd(){
         return adService.getFirstPageList();
     }
 
@@ -43,9 +44,10 @@ public class AdController {
      * @param ad 广告对象
      * @return 执行返回的状态
      */
-    public Status insertAd(Ad ad){
+    public ResultStatus insertAd(Ad ad){
         boolean b = adService.saveOrUpdate(ad);
-        return b?new Status(200, "成功"):new Status(0, "失败");
+        return b?new ResultStatus().setCode("200").setMsg("ok") :
+                new ResultStatus().setMsg("插入失败").setCode("1");
     }
 
     /**
@@ -53,9 +55,10 @@ public class AdController {
      * @param adId 广告id
      * @return 执行返回的状态
      */
-    public Status delAd(Integer adId){
+    public ResultStatus delAd(Integer adId){
         boolean b = adService.removeById(adId);
-        return b?new Status(200, "成功"):new Status(0, "失败");
+        return b?new ResultStatus().setCode("200").setMsg("ok") :
+                new ResultStatus().setMsg("删除失败").setCode("1");
     }
 }
 

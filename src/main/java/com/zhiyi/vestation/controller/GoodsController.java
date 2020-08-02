@@ -2,6 +2,7 @@ package com.zhiyi.vestation.controller;
 
 
 import com.zhiyi.vestation.pojo.Goods;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class GoodsController {
      */
     @ResponseBody
     @GetMapping("/recommendGoods")
-    public List<Goods> getRecommendGoods(){
+    public ResultStatus getRecommendGoods(){
         return goodsService.getRecommendGoods();
     }
 
@@ -41,8 +42,7 @@ public class GoodsController {
      */
     @ResponseBody
     @GetMapping("/allGoods")
-    public List<Goods> getAllGoodsInPage(int p){
-
+    public ResultStatus getAllGoodsInPage(int p){
         return goodsService.getAllGoodsInPage(p);
     }
 
@@ -64,9 +64,10 @@ public class GoodsController {
      */
     @ResponseBody
     @PostMapping("/uploadGoods")
-    public Status uploadGoods(Goods goods){
+    public ResultStatus uploadGoods(Goods goods){
         boolean b = goodsService.saveOrUpdate(goods);
-        return b?new Status(200, "成功"):new Status(0, "失败");
+        return b?new ResultStatus().setCode("200").setMsg("ok"):
+                new ResultStatus().setMsg("0").setMsg("更新失败请检查参数");
     }
 }
 

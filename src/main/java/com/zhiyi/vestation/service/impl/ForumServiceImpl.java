@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhiyi.vestation.pojo.Comment;
 import com.zhiyi.vestation.pojo.Forum;
 import com.zhiyi.vestation.mapper.ForumMapper;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.CommentService;
 import com.zhiyi.vestation.service.ForumService;
@@ -42,7 +43,7 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
      * @return
      */
     @Override
-    public List<Forum> selectForumByCateId(String openid, int forumType,int page) {
+    public ResultStatus selectForumByCateId(String openid, int forumType, int page) {
         /**
          * 1.先从ES中拿到帖子信息   这里暂时从数据库拿
          */
@@ -63,7 +64,14 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
          * 4.查询出该用户是否  点赞过这些帖子
          */
         forums = selectLikeStatus(openid, forums);
-        return forums;
+
+        ResultStatus resultStatus = new ResultStatus();
+        if(openid == null || page == 0 || forumType <0 || openid.equals("")) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if(forums == null || forums.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setData(forums).setMsg("ok").setCode("200");
     }
 
     /**
@@ -141,15 +149,4 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         return forums;
     }
 
-    /**
-     * 查找帖子评论
-     */
-    public List<Forum> addComments(List<Forum> list) {
-        for (Forum forum:list) {
-            QueryWrapper<Object> commentWrapper = new QueryWrapper<>();
-            List<Comment> comments = commentService.selectByForumId(forum.getForumId());
-            forum.setComments(comments);
-        }
-        return list; //返回帖子列表
-    }
 }

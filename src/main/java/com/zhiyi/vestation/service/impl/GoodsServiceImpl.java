@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhiyi.vestation.pojo.Goods;
 import com.zhiyi.vestation.mapper.GoodsMapper;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.GoodsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -33,7 +34,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @return Goods对象列表
      */
     @Override
-    public List<Goods> getRecommendGoods() {
+    public ResultStatus getRecommendGoods() {
         QueryWrapper<Goods> wrapper = new QueryWrapper<>(); //创建包装
         wrapper.eq("exist", 1); //查询条件包装
 
@@ -44,7 +45,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        return addVxUser(baseMapper.selectPage(page, wrapper).getRecords()); //查询并获取记录
+        List<Goods> goods = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (goods == null || goods.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没数据");
+        }
+        return resultStatus.setCode("200").setMsg("ok").setData(goods);
     }
 
     /**
@@ -53,7 +59,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @return 商品列表
      */
     @Override
-    public List<Goods> getAllGoodsInPage(int p) {
+    public ResultStatus getAllGoodsInPage(int p) {
         QueryWrapper<Goods> wrapper = new QueryWrapper<>(); //创建包装
         wrapper.eq("exist", 1); //查询条件包装
 
@@ -64,7 +70,14 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        return addVxUser(baseMapper.selectPage(page, wrapper).getRecords()); //查询并获取记录
+        List<Goods> goods = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (goods == null || goods.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(goods);
     }
 
     /**

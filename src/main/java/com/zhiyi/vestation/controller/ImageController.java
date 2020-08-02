@@ -1,6 +1,7 @@
 package com.zhiyi.vestation.controller;
 
 
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class ImageController {
      */
     @ResponseBody
     @PostMapping("uploadImage")
-    public Status uploadImage(MultipartFile multipartFile) throws IOException {
+    public ResultStatus uploadImage(MultipartFile multipartFile) throws IOException {
         byte[] image = multipartFile.getBytes();
         return imageService.uploadImage(image);
     }
@@ -45,7 +46,7 @@ public class ImageController {
      */
     @ResponseBody
     @GetMapping("delImage")
-    public Status delImage(String key){
+    public ResultStatus delImage(String key){
         return imageService.delImage(key);
     }
 }

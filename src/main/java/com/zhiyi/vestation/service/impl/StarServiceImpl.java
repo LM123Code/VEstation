@@ -45,7 +45,7 @@ public class StarServiceImpl extends ServiceImpl<LikeMapper, Star> implements St
      * @return
      */
     @Override
-    public Status likeForum(Star star) {
+    public ResultStatus likeForum(Star star) {
         /**
          * 1.查询出被点人文章人的发布者
          */
@@ -60,7 +60,14 @@ public class StarServiceImpl extends ServiceImpl<LikeMapper, Star> implements St
          * 3.插入记录
          */
         int insert = baseMapper.insert(star);
-        return insert > 0? new Status(200,"点赞成功") : new Status(0,"点赞失败");
+
+        ResultStatus resultStatus = new ResultStatus();
+        if(star.getOpenid() == null || star.getForumId() < 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if(insert <= 0) {
+            return resultStatus.setCode("1").setMsg("点赞失败");
+        }
+        return resultStatus.setMsg("ok").setCode("200");
     }
 
     /**
@@ -69,7 +76,7 @@ public class StarServiceImpl extends ServiceImpl<LikeMapper, Star> implements St
      * @return
      */
     @Override
-    public ResultStatus<LikeMessage> selectLikeMessage(int page, String publishOpenid) {
+    public ResultStatus selectLikeMessage(int page, String publishOpenid) {
         /**
          * 查询未读的点赞记录数
          */
@@ -86,7 +93,13 @@ public class StarServiceImpl extends ServiceImpl<LikeMapper, Star> implements St
         likeMessageWrapper.orderByDesc("create_date");
         List<Star> likes = baseMapper.selectPage(likePage, likeMessageWrapper).getRecords();
         LikeMessage likeMessage = new LikeMessage(likes, unreadCount);
-        return likeMessage == null? new ResultStatus<LikeMessage>("0","没有点赞记录"):
-                new ResultStatus<LikeMessage>("0","查询成功",likeMessage);
+
+        ResultStatus resultStatus = new ResultStatus();
+        if(publishOpenid == null || page == 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if(likes == null || likes.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setData(likeMessage).setMsg("ok").setCode("200");
     }
 }

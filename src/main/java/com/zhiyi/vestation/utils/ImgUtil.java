@@ -1,6 +1,7 @@
 package com.zhiyi.vestation.utils;
 
 import com.qiniu.common.Zone;
+import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
@@ -8,11 +9,13 @@ import com.qiniu.util.Auth;
 import com.qiniu.util.Base64;
 import com.qiniu.util.StringMap;
 import com.qiniu.util.UrlSafeBase64;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import javax.xml.transform.Result;
 import java.util.UUID;
 
 
@@ -76,17 +79,19 @@ public class ImgUtil {
      * @param base64
      * @return   code=200代表上传成功，key为图片名称
      */
-    public static Status uploadImg(byte[] base64){
+    public static ResultStatus uploadImg(byte[] base64){
 //        生成随机图片名称key
         String key = UUID.randomUUID().toString();
-        Status status = new Status(0,key);
+        ResultStatus resultStatus = new ResultStatus();
         try {
             int code = put64image(base64, key);
-            status.setCode(code);
-            return status;//返回上传状态
+            if (code != 200) {
+                return resultStatus.setCode("1").setMsg("上传失败");
+            }
+            return resultStatus.setCode("200").setMsg("ok").setData(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return status;
+            return resultStatus;
         }
     }
 
@@ -95,16 +100,20 @@ public class ImgUtil {
      * @param key 图片的文件名
      * @Explain 删除空间中的图片
      */
-    public static Status delete(String key) {
+    public static ResultStatus delete(String key) {
         BucketManager bucketManager = new BucketManager(auth, cfg);
-        Status status = new Status(0,key);
+        ResultStatus resultStatus = new ResultStatus();
         try {
-            bucketManager.delete(bucketname, key);
-            status.setCode(200);
-            return status;
+            Response delete = bucketManager.delete(bucketname, key);
+            if (delete.statusCode != 200)
+                return resultStatus.setMsg("删除失败").setCode("1");
+            if (key == null || key.equals("")) {
+                return resultStatus.setCode("0").setMsg("没有图片名");
+            }
+            return resultStatus.setMsg("ok").setCode("200");
         } catch (Exception e) {
             e.printStackTrace();
-            return status;
+            return resultStatus;
         }
     }
 }

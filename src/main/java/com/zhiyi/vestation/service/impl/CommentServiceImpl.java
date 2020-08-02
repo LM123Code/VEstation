@@ -40,7 +40,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return
      */
     @Override
-    public List<Comment> selectByForumId(int forumId) {
+    public ResultStatus selectByForumId(int forumId) {
         QueryWrapper<Comment> commentWrapper = new QueryWrapper<>();
         commentWrapper.eq("forum_id",forumId);
         List<Comment> comments = baseMapper.selectList(commentWrapper);  //查询出所有的实体
@@ -55,7 +55,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }).sorted((comment1, comment2) -> {
             return comment1.getCreateDate().before(comment2.getCreateDate())? -1 : 1;
         }).collect(Collectors.toList());
-        return firstComments;
+
+        ResultStatus resultStatus = new ResultStatus();
+        if(forumId < 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if(firstComments == null || firstComments.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setData(firstComments).setMsg("ok").setCode("200");
+
     }
 
     /**
@@ -84,7 +92,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return
      */
     @Override
-    public ResultStatus<CommentMessage> selectCommentMsg(String publishOpenid, int page) {
+    public ResultStatus selectCommentMsg(String publishOpenid, int page) {
         /**
          * 查询出未读的评论数量
          */
@@ -103,8 +111,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         Page<Comment> commentPage = new Page<Comment>(page, 10);
         List<Comment> records = baseMapper.selectPage(commentPage, commentRecords).getRecords();   //查出了评论记录
         CommentMessage commentMessage = new CommentMessage(records, unreadCount);
-        return records == null? new ResultStatus<CommentMessage>("0","没有评论信息"):
-                new ResultStatus<CommentMessage>("200","查找成功",commentMessage);
+
+        ResultStatus resultStatus = new ResultStatus();
+        if(publishOpenid == null || page == 0) {
+           return resultStatus.setCode("0").setMsg("参数异常");
+        }else if(records == null || records.size() == 0) {
+           return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setData(commentMessage).setMsg("ok").setCode("200");
     }
 
     /**

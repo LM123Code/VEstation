@@ -2,6 +2,7 @@ package com.zhiyi.vestation.service;
 
 import com.zhiyi.vestation.pojo.Ad;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zhiyi.vestation.pojo.ResultStatus;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface AdService extends IService<Ad> {
      * 获取首页广告
      * @return
      */
-    List<Ad> getFirstPageList();
+    ResultStatus getFirstPageList();
 }

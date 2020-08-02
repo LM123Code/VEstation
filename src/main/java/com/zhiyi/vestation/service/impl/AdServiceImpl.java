@@ -3,6 +3,7 @@ package com.zhiyi.vestation.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zhiyi.vestation.pojo.Ad;
 import com.zhiyi.vestation.mapper.AdMapper;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.service.AdService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,17 @@ public class AdServiceImpl extends ServiceImpl<AdMapper, Ad> implements AdServic
      * @return
      */
     @Override
-    public List<Ad> getFirstPageList() {
+    public ResultStatus getFirstPageList() {
         QueryWrapper<Ad> wrapper = new QueryWrapper<>();
         wrapper.eq("exist",1);
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        return baseMapper.selectList(wrapper);
+        List<Ad> ads = baseMapper.selectList(wrapper);
+        ResultStatus resultStatus = new ResultStatus();
+        if (ads == null || ads.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有广告信息");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(ads);
     }
 }

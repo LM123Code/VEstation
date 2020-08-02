@@ -42,14 +42,9 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
      * @return
      */
     @Override
-    public Map<String, String> login(String appid, String secret, String js_code, String userAvatarUrl, String nickName) {
+    public ResultStatus login(String appid, String secret, String js_code, String userAvatarUrl, String nickName) {
         Map map = new HashMap<>();
-        //登录凭证不能为空
-        if (js_code == null || js_code.length() == 0) {
-            map.put("status", 0);
-            map.put("msg", "code 不能为空");
-            return map;
-        }
+
         //小程序唯一标识   (在微信小程序管理后台获取)
         String wxspAppid = appid;
         //小程序的 app secret (在微信小程序管理后台获取)
@@ -69,11 +64,14 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
 //        插入或更新用户
         int status = baseMapper.insertOrUpdateByOpenid(openid, nickName, userAvatarUrl);
 
+        ResultStatus resultStatus = new ResultStatus();
+        if (js_code == null && js_code.length() == 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (status <= 0) {
+            return resultStatus.setCode("1").setMsg("登录失败");
+        }
 
-        map.put("status", status); //登录成功status为1，失败为0
-        map.put("openid",openid);
-
-        return map;
+        return resultStatus.setCode("200").setMsg("登录成功");
     }
 
     /**
@@ -159,6 +157,33 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
             return vxUser.getJobIds() == null ?"" :vxUser.getJobIds();
         }
     }
+
+    /**
+     * 根据openid查询用户的所有信息
+     * @param openid
+     * @return
+     */
+    @Override
+    public ResultStatus selectUserInfo(String openid) {
+        QueryWrapper<VxUser> userInfoWrapper = new QueryWrapper<>();
+        userInfoWrapper.eq("openid",openid);
+        VxUser vxUser = baseMapper.selectOne(userInfoWrapper);
+        ResultStatus resultStatus = new ResultStatus();
+        if(openid == null || openid.equals("")) {
+            resultStatus.setCode("0").setMsg("参数异常");
+            System.out.println(resultStatus);
+            return resultStatus;
+        }else if(vxUser == null) {
+            resultStatus.setCode("1").setMsg("没有数据");
+            System.out.println(resultStatus);
+            return resultStatus;
+        }
+        resultStatus.setData(vxUser).setMsg("ok").setCode("200");
+        System.out.println(resultStatus);
+        return resultStatus;
+
+    }
+
 
     private VxUser selectLikeStatusUtil(String openid, String attrName) {
         QueryWrapper<VxUser> collectWrapper = new QueryWrapper<>();

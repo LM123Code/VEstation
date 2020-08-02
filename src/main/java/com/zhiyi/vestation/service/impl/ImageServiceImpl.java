@@ -1,5 +1,6 @@
 package com.zhiyi.vestation.service.impl;
 
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.ImageService;
 import com.zhiyi.vestation.utils.ImgUtil;
@@ -25,7 +26,7 @@ public class ImageServiceImpl implements ImageService {
      * @throws IOException
      */
     @Override
-    public Status uploadImage(byte[] image) {
+    public ResultStatus uploadImage(byte[] image) {
         return ImgUtil.uploadImg(image);
     }
 
@@ -35,7 +36,7 @@ public class ImageServiceImpl implements ImageService {
      * @return 返回status状态
      */
     @Override
-    public Status delImage(String key) {
+    public ResultStatus delImage(String key) {
         return ImgUtil.delete(key);
     }
 }

@@ -36,9 +36,20 @@ public class VxUserController {
      */
     @ResponseBody //将返回对象转化为json数据，写入response对象的body区
     @PostMapping("/login") //访问路径
-    public Map<String, String> login(String appid, String secret,String js_code, String userAvatarUrl, String nickName){
+    public ResultStatus login(String appid, String secret,String js_code, String userAvatarUrl, String nickName){
         return vxUserService.login(appid, secret, js_code, userAvatarUrl, nickName);
     }
+
+    /**
+     * 根据用户openid查询用户信息
+     * @param openid
+     * @return
+     */
+    @GetMapping("/userInfo")
+    public ResultStatus selectUserInfo(String openid) {
+        return vxUserService.selectUserInfo(openid);
+    }
+
 
     /**
      * 收藏帖子
