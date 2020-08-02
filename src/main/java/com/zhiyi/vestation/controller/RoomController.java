@@ -1,11 +1,13 @@
 package com.zhiyi.vestation.controller;
 
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Room;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.Result;
 import java.util.List;
 
 /**
@@ -29,7 +31,7 @@ public class RoomController {
      */
     @ResponseBody
     @GetMapping("/recommendRooms")
-    public List<Room> getRecommendRooms(){
+    public ResultStatus getRecommendRooms(){
         return roomService.getRecommendRooms();
     }
 
@@ -40,7 +42,7 @@ public class RoomController {
      */
     @ResponseBody
     @GetMapping("/allRooms")
-    public List<Room> getAllRoomsInPage(int p){
+    public ResultStatus getAllRoomsInPage(int p){
         return roomService.getAllRoomsInPage(p);
     }
 
@@ -62,9 +64,10 @@ public class RoomController {
      */
     @ResponseBody
     @GetMapping("/uploadRoom")
-    public Status uploadRoom(Room room){
+    public ResultStatus uploadRoom(Room room){
         boolean b = roomService.save(room);
-        return b?new Status(200, "成功"):new Status(0, "失败");
+        return b?new ResultStatus().setCode("200").setMsg("ok"):
+                new ResultStatus().setCode("1").setMsg("更新失败，请检查参数");
     }
 }
 
