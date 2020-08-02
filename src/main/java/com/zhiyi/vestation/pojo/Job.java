@@ -8,6 +8,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
 
@@ -20,6 +25,7 @@ import java.io.Serializable;
  * @since 2020-07-08
  */
 @Data
+@Document(indexName = "job")
 public class Job implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,72 +33,87 @@ public class Job implements Serializable {
     /**
      * 唯一标识
      */
+    @Id
+    @Field(type = FieldType.Integer)
     @TableId(value = "job_id", type = IdType.AUTO)
     private Integer jobId;
 
     /**
      * 职位标题
      */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String jobTitle;
 
     /**
      * 职位分类
      */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String jobClass;
 
     /**
      * 职位要求
      */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String jobDesc;
 
     /**
      * 价格
      */
+    @Field(type = FieldType.Scaled_Float,scalingFactor = 100)
     private BigDecimal jobPrice;
 
     /**
      * 发布时间
      */
+    @Field(type = FieldType.Date, format = DateFormat.date)
     private Date createDate;
 
     /**
      * 公司名称
      */
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String companyName;
 
     /**
      * 工作地址
      */
+    @Field(type = FieldType.Keyword)
     private String address;
 
     /**
      * 浏览量
      */
+    @Field(type = FieldType.Integer)
     private Integer views;
 
     /**
      * 发布人
      */
+    @Field(type = FieldType.Keyword)
     private String openid;
 
     /**
      * 投递邮箱
      */
+    @Field(type = FieldType.Keyword)
     private String email;
 
     /**
      * 简历格式
      */
+    @Field(type = FieldType.Keyword)
     private String resumeFormat;
 
     /**
      * 微信号
      */
+    @Field(type = FieldType.Keyword)
     private String wechat;
 
     /**
      * 推荐分数
      */
+    @Field(type = FieldType.Integer)
     private Integer score;
 
     /**
