@@ -1,5 +1,6 @@
 package com.zhiyi.vestation.service;
 
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -41,7 +42,7 @@ public interface VxUserService extends IService<VxUser> {
      * @param forumType  帖子类型
      * @return
      */
-    public Status collectForum(String openid, int forumId, int forumType);
+    public ResultStatus collectForum(String openid, int forumId, int forumType);
 
     /**
      * 根据openid 和forumType查询出某个用户收藏的某种帖子

@@ -2,6 +2,7 @@ package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.mapper.VxUserMapper;
@@ -95,7 +96,7 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
      * @return
      */
     @Override
-    public Status collectForum(String openid, int forumId, int forumType) {
+    public ResultStatus collectForum(String openid, int forumId, int forumType) {
        boolean bool = false; //收藏标志  收藏成功之后会将其改为true
        int update = -1;
        VxUser vxUser = null;
@@ -128,7 +129,14 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         UpdateWrapper<VxUser> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("openid", openid);
         update = baseMapper.update(vxUser, updateWrapper);
-        return update != 0?  new Status(200, "收藏成功"): new Status(0, "收藏失败");
+
+        ResultStatus resultStatus = new ResultStatus();
+        if(openid == null || openid.equals("") || forumId < 0 || forumType < 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if(update <= 0) {
+            return resultStatus.setCode("1").setMsg("点赞失败");
+        }
+        return resultStatus.setMsg("ok").setCode("200");
     }
 
     /**

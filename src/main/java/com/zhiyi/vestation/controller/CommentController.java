@@ -34,7 +34,7 @@ public class CommentController {
      * @return
      */
     @RequestMapping("/selectComments")
-    public List<Comment> selectFirstComment(int forumId) {
+    public ResultStatus selectFirstComment(int forumId) {
        return commentService.selectByForumId(forumId);
     }
 
@@ -55,19 +55,11 @@ public class CommentController {
      * @return
      */
     @GetMapping("/commentMsg")
-    public ResultStatus<CommentMessage> selectCommentMessage(String publishOpenid, int page) {
+    public ResultStatus selectCommentMessage(String publishOpenid, int page) {
         return commentService.selectCommentMsg(publishOpenid, page);
     }
 
 
-    /**
-     * 查询二级评论
-     * @param replyId 被评论的 “评论”id
-     * @return
-     */
-    @GetMapping("/secondComments")
-    public List<Comment> selectSecondComment(int replyId) {
-        return commentService.selectSecondComment(replyId);
-    }
+
 }
 

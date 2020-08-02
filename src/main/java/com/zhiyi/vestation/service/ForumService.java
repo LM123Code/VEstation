@@ -2,6 +2,7 @@ package com.zhiyi.vestation.service;
 
 import com.zhiyi.vestation.pojo.Forum;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zhiyi.vestation.pojo.ResultStatus;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface ForumService extends IService<Forum> {
     /**
      * 根据分类id查询帖子
      */
-    public List<Forum> selectForumByCateId(String openid, int forumType,int page);
+    public ResultStatus selectForumByCateId(String openid, int forumType, int page);
 
     /**
      * 通过forumId删除帖子

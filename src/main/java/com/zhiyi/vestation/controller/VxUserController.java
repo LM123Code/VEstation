@@ -1,6 +1,7 @@
 package com.zhiyi.vestation.controller;
 
 
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class VxUserController {
      * @return
      */
     @GetMapping("/collect")
-    public Status collectForum(String openid, int forumId, int forumType) {
+    public ResultStatus collectForum(String openid, int forumId, int forumType) {
         return vxUserService.collectForum(openid,forumId,forumType);
     }
 }

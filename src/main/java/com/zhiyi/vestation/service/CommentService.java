@@ -22,7 +22,7 @@ public interface CommentService extends IService<Comment> {
      * @param forumId
      * @return
      */
-    public List<Comment> selectByForumId(int forumId);
+    public ResultStatus selectByForumId(int forumId);
 
     /**
      * 评论功能
@@ -37,7 +37,7 @@ public interface CommentService extends IService<Comment> {
      * @param page 分页
      * @return
      */
-    public ResultStatus<CommentMessage> selectCommentMsg(String publishOpenid, int page);
+    public ResultStatus selectCommentMsg(String publishOpenid, int page);
 
 
     /**

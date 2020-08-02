@@ -2,6 +2,7 @@ package com.zhiyi.vestation.controller;
 
 
 import com.zhiyi.vestation.pojo.Forum;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.service.ForumService;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,8 @@ public class ForumController {
      * @return
      */
     @GetMapping("/dongtai")
-    public List<Forum> selectForumByCateId(String openid, int forumType, int page) {
-        List<Forum> forums = forumService.selectForumByCateId(openid, forumType, page);
-        return forums;
+    public ResultStatus selectForumByCateId(String openid, int forumType, int page) {
+       return forumService.selectForumByCateId(openid, forumType, page);
     }
     @GetMapping("/delete")
     public int deleteForum(int forumId) {

@@ -45,8 +45,7 @@ public class StarController {
      * @return
      */
     @RequestMapping("/clickLike")
-    public Status likeForum(Star star) {
-       System.out.println(star);
+    public ResultStatus likeForum(Star star) {
        return starService.likeForum(star);
     }
 
@@ -56,7 +55,7 @@ public class StarController {
      * @return
      */
     @GetMapping("/likeMsg")
-    public ResultStatus<LikeMessage> selectLikeMessage(String publishOpenid, int page) {
+    public ResultStatus selectLikeMessage(String publishOpenid, int page) {
        return starService.selectLikeMessage(page,publishOpenid);
     }
 }

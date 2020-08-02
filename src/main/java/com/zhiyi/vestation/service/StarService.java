@@ -29,12 +29,12 @@ public interface StarService extends IService<Star> {
      * @param star
      * @return
      */
-    public Status likeForum(Star star);
+    public ResultStatus likeForum(Star star);
 
     /**
      * 查询点赞信息
      * @param publishOpenid
      * @return
      */
-    public ResultStatus<LikeMessage> selectLikeMessage(int page, String publishOpenid);
+    public ResultStatus selectLikeMessage(int page, String publishOpenid);
 }
