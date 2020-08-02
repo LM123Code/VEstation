@@ -2,6 +2,7 @@ package com.zhiyi.vestation.service;
 
 import com.zhiyi.vestation.pojo.Job;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zhiyi.vestation.pojo.ResultStatus;
 
 import java.util.List;
 
@@ -19,14 +20,14 @@ public interface JobService extends IService<Job> {
      * 首页工作推荐
      * @return Job对象列表
      */
-    List<Job> getRecommendJobs();
+    ResultStatus getRecommendJobs();
 
     /**
      * 获取去某一页的所有job
      * @param p 页码
      * @return job列表
      */
-    List<Job> getAllJobsInPage(int p);
+    ResultStatus getAllJobsInPage(int p);
 
     /**
      * 为集合中的工作添加发布者的属性

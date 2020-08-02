@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhiyi.vestation.pojo.Job;
 import com.zhiyi.vestation.mapper.JobMapper;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.JobService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -33,7 +34,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
      * @return Job对象列表
      */
     @Override
-    public List<Job> getRecommendJobs() {
+    public ResultStatus getRecommendJobs() {
         QueryWrapper<Job> wrapper = new QueryWrapper<>(); //创建包装
         wrapper.eq("exist", 1); //查询条件包装
 
@@ -44,7 +45,13 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        return addVxUser(baseMapper.selectPage(page, wrapper).getRecords()); //查询并获取记录
+
+        List<Job> jobs = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (jobs == null || jobs.size() == 0) {
+            return resultStatus.setCode("'1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(jobs);
     }
 
     /**
@@ -53,7 +60,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
      * @return job列表
      */
     @Override
-    public List<Job> getAllJobsInPage(int p) {
+    public ResultStatus getAllJobsInPage(int p) {
         QueryWrapper<Job> wrapper = new QueryWrapper<>(); //创建包装
         wrapper.eq("exist", 1); //查询条件包装
 
@@ -64,7 +71,15 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        return addVxUser(baseMapper.selectPage(page, wrapper).getRecords()); //查询并获取记录
+        List<Job> jobs = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setMsg("参数异常").setCode("0");
+        }else if (jobs == null || jobs.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(jobs);
     }
 
     /**

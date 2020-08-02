@@ -2,6 +2,7 @@ package com.zhiyi.vestation.controller;
 
 
 import com.zhiyi.vestation.pojo.Job;
+import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class JobController {
      */
     @ResponseBody
     @GetMapping("/recommendJobs")
-    public List<Job> getRecommendJobs(){
+    public ResultStatus getRecommendJobs(){
         return jobService.getRecommendJobs();
     }
 
@@ -41,7 +42,7 @@ public class JobController {
      */
     @ResponseBody
     @GetMapping("/allJobs")
-    public List<Job> getAllJobsInPage(int p){
+    public ResultStatus getAllJobsInPage(int p){
 
         return jobService.getAllJobsInPage(p);
     }
@@ -65,9 +66,10 @@ public class JobController {
      */
     @ResponseBody
     @PostMapping("/uploadJob")
-    public Status uploadJob(Job job){
+    public ResultStatus uploadJob(Job job){
         boolean b = jobService.saveOrUpdate(job);
-        return b?new Status(200, "成功"):new Status(0, "失败");
+        return b?new ResultStatus().setCode("200").setMsg("更新成功"):
+                new ResultStatus().setCode("0").setMsg("更新失败，请检查参数");
     }
 }
 
