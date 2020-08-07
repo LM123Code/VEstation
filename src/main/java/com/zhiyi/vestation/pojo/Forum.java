@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.List;
@@ -59,6 +60,7 @@ public class Forum implements Serializable {
     /**
      * 发布时间
      */
+    
     @Field(type = FieldType.Date, format = DateFormat.date)
     private Date createDate;
 

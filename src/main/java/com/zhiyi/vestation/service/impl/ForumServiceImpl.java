@@ -1,6 +1,7 @@
 package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhiyi.vestation.pojo.Comment;
 import com.zhiyi.vestation.pojo.Forum;
@@ -66,7 +67,7 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         forums = selectLikeStatus(openid, forums);
 
         ResultStatus resultStatus = new ResultStatus();
-        if(openid == null || page == 0 || forumType <0 || openid.equals("")) {
+        if(openid == null || page <= 0 || forumType <0 || openid.equals("")) {
             return resultStatus.setCode("0").setMsg("参数异常");
         }else if(forums == null || forums.size() == 0) {
             return resultStatus.setCode("1").setMsg("没有数据");
@@ -80,8 +81,15 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
      * @return
      */
     @Override
-    public int deleteForum(int forumId) {
-       return baseMapper.deleteById(forumId);
+    public ResultStatus deleteForum(int forumId) {
+        int delete = baseMapper.deleteById(forumId);
+        ResultStatus resultStatus = new ResultStatus();
+        if (forumId <= 0) {
+            return resultStatus.setMsg("参数异常").setCode("0");
+        }else if (delete <= 0) {
+            return resultStatus.setCode("1").setMsg("删除失败");
+        }
+        return resultStatus.setCode("200").setMsg("ok");
     }
 
     /**
@@ -95,6 +103,28 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         publishOpenidWrapper.select("openid").eq("forum_id",forumId);
         Forum forum = baseMapper.selectOne(publishOpenidWrapper);
         return forum.getOpenid();
+    }
+
+    /**
+     * 我的动态
+     * @param openid
+     * @return
+     */
+    @Override
+    public ResultStatus selectMyForum(String openid, int page) {
+        QueryWrapper<Forum> myForumWrapper = new QueryWrapper<>();
+        myForumWrapper.eq("openid",openid);
+        myForumWrapper.orderByDesc("create_date");
+        Page<Forum> myForumPage = new Page<>(page,10);  //分页
+        List<Forum> myForums = baseMapper.selectPage(myForumPage, myForumWrapper).getRecords();
+
+        ResultStatus resultStatus = new ResultStatus();
+        if (openid == null || openid.equals("") || page <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (myForums == null) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(myForums);
     }
 
     /**

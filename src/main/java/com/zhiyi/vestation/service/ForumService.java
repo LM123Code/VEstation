@@ -4,6 +4,7 @@ import com.zhiyi.vestation.pojo.Forum;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhiyi.vestation.pojo.ResultStatus;
 
+import javax.xml.transform.Result;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public interface ForumService extends IService<Forum> {
      * @param forumId
      * @return
      */
-    public int deleteForum(int forumId);
+    public ResultStatus deleteForum(int forumId);
 
     /**
      * 根据forumId查询 发布者openid 用于点赞时插入数据
@@ -33,4 +34,13 @@ public interface ForumService extends IService<Forum> {
      * @return
      */
     public String selectOpenid(int forumId);
+
+    /**
+     * 我的动态
+     * @param openid
+     * @return
+     */
+    public ResultStatus selectMyForum(String openid, int page);
+
+
 }

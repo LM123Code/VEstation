@@ -46,7 +46,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
          * 应该从ES中查询，上述是从mysql查询
          */
 
-        List<Room> rooms = baseMapper.selectPage(page, wrapper).getRecords();//查询并获取记录
+        List<Room> rooms = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
         ResultStatus resultStatus = new ResultStatus();
         if (rooms == null || rooms.size() == 0) {
             return resultStatus.setCode("1").setMsg("没有数据");

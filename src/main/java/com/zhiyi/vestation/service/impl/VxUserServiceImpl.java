@@ -170,18 +170,31 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         VxUser vxUser = baseMapper.selectOne(userInfoWrapper);
         ResultStatus resultStatus = new ResultStatus();
         if(openid == null || openid.equals("")) {
-            resultStatus.setCode("0").setMsg("参数异常");
-            System.out.println(resultStatus);
-            return resultStatus;
+           return resultStatus.setCode("0").setMsg("参数异常");
         }else if(vxUser == null) {
-            resultStatus.setCode("1").setMsg("没有数据");
-            System.out.println(resultStatus);
-            return resultStatus;
+           return resultStatus.setCode("1").setMsg("没有数据");
         }
-        resultStatus.setData(vxUser).setMsg("ok").setCode("200");
-        System.out.println(resultStatus);
-        return resultStatus;
+        return resultStatus.setMsg("ok").setCode("200").setData(vxUser);
 
+    }
+
+    /**
+     * 更新用户信息
+     * @param vxUser
+     * @return
+     */
+    @Override
+    public ResultStatus updateUserInfo(VxUser vxUser) {
+        UpdateWrapper<VxUser> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("openid",vxUser.getOpenid());
+        int update = baseMapper.update(vxUser, updateWrapper);
+        ResultStatus resultStatus = new ResultStatus();
+        if (vxUser == null || vxUser.getOpenid() == null) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (update <= 0) {
+            return resultStatus.setMsg("更新失败").setCode("1");
+        }
+        return resultStatus.setCode("200").setMsg("ok");
     }
 
 
