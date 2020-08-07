@@ -53,7 +53,7 @@ public class ImageController {
                 keys.add(entry.getKey());
             }
         }
-        return ResultStatus.builder().code("200").msg("上传成功").data(keys).build();
+        return ResultStatus.builder().code("200").msg("上传成功" + keys.size() + "张图片").data(keys).build();
     }
 
     /**
