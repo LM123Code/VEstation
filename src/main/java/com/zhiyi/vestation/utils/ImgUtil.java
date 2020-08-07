@@ -16,6 +16,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import javax.xml.transform.Result;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -76,23 +79,28 @@ public class ImgUtil {
 
     /**
      * 上传图片
-     * @param base64
+     * @param base64s
      * @return   code=200代表上传成功，key为图片名称
      */
-    public static ResultStatus uploadImg(byte[] base64){
+    public static Map<String, Integer> uploadImg(List<byte[]> base64s){
 //        生成随机图片名称key
-        String key = UUID.randomUUID().toString();
-        ResultStatus resultStatus = new ResultStatus();
+        Map<String, Integer> map = new HashMap<>();
         try {
-            int code = put64image(base64, key);
-            if (code != 200) {
-                return resultStatus.setCode("1").setMsg("上传失败");
+            for(byte[] base64 : base64s){
+                String key = UUID.randomUUID().toString();
+                ResultStatus resultStatus = new ResultStatus();
+                int code = 0;
+                code = put64image(base64, key);
+                if (code != 200) {
+                map.put(key, 0);
+                }else {
+                    map.put(key, 200);
+                }
             }
-            return resultStatus.setCode("200").setMsg("ok").setData(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return resultStatus;
         }
+        return map;
     }
 
     /**

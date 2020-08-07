@@ -7,6 +7,8 @@ import com.zhiyi.vestation.utils.ImgUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -26,8 +28,8 @@ public class ImageServiceImpl implements ImageService {
      * @throws IOException
      */
     @Override
-    public ResultStatus uploadImage(byte[] image) {
-        return ImgUtil.uploadImg(image);
+    public Map<String, Integer> uploadImage(List<byte[]> images) {
+        return ImgUtil.uploadImg(images);
     }
 
     /**

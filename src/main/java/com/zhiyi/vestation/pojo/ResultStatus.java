@@ -3,10 +3,16 @@ package com.zhiyi.vestation.pojo;
 
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ResultStatus {
     private String code;
     private String msg;

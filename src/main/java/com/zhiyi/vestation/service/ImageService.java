@@ -4,6 +4,8 @@ import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,7 +23,7 @@ public interface ImageService {
      * @return 返回status查看状态
      * @throws IOException
      */
-    ResultStatus uploadImage(byte[] image);
+    Map<String, Integer> uploadImage(List<byte[]> images);
 
     /**
      * 删除图片

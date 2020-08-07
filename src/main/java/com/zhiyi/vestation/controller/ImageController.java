@@ -2,7 +2,6 @@ package com.zhiyi.vestation.controller;
 
 
 import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -28,15 +31,29 @@ public class ImageController {
 
     /**
      * 上传图片
-     * @param multipartFile  图片文件
+     * @param multipartFiles  图片文件
      * @return 返回status查看状态
      * @throws IOException
      */
     @ResponseBody
     @PostMapping("uploadImage")
-    public ResultStatus uploadImage(MultipartFile multipartFile) throws IOException {
-        byte[] image = multipartFile.getBytes();
-        return imageService.uploadImage(image);
+    public ResultStatus uploadImage(List<MultipartFile> multipartFiles) throws IOException {
+        List<byte[]> images = multipartFiles.stream().map(multipartFile -> {
+            try {
+                return multipartFile.getBytes();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).collect(Collectors.toList());
+        Map<String, Integer> map = imageService.uploadImage(images);
+        List<String> keys = new ArrayList<>();
+        for(Map.Entry<String, Integer> entry : map.entrySet()){
+            if (entry.getValue() == 200){
+                keys.add(entry.getKey());
+            }
+        }
+        return ResultStatus.builder().code("200").msg("上传成功").data(keys).build();
     }
 
     /**
