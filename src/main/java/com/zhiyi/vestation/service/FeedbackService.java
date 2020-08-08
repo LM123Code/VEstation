@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface FeedbackService extends IService<Feedback> {
 
+    public int insertFeedback(Feedback feedback);
 }

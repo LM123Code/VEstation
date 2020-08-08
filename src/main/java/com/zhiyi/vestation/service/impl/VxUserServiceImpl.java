@@ -2,20 +2,26 @@ package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.Status;
-import com.zhiyi.vestation.pojo.VxUser;
+import com.zhiyi.vestation.mapper.GoodsMapper;
+import com.zhiyi.vestation.mapper.JobMapper;
+import com.zhiyi.vestation.mapper.RoomMapper;
+import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.mapper.VxUserMapper;
+
+import com.zhiyi.vestation.service.ForumService;
 import com.zhiyi.vestation.service.VxUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhiyi.vestation.utils.HttpRequest;
 import org.apache.ibatis.annotations.Param;
+import org.apache.velocity.runtime.directive.Parse;
+import org.apache.velocity.runtime.directive.contrib.For;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * <p>
@@ -30,6 +36,8 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
 
     @Autowired
     VxUserMapper vxUserMapper;//注入为微信user的mapper类
+    @Autowired
+    ForumService forumService;
 
     /**
      * 登录方法
@@ -138,7 +146,25 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
     }
 
     /**
-     * 根据openid和 forumType查询某个人收藏的某种帖子
+     * 查询某个用户的收藏帖子，用户我的动态页面展示
+     * @param openid
+     * @param forumType
+     * @return
+     */
+    @Override
+    public List selectCollectsOfUser(String openid, int forumType) {
+        String collectString= selectCollect(openid, forumType); //根据收藏的类型查出收藏帖子id的字符串
+        String[] collects = collectString.split(",");
+        if(collects.length == 1 && collects[0].equals("")) {
+            return null;
+        }
+        int[] array = Arrays.asList(collects).stream().mapToInt(Integer::parseInt).toArray();  //将收藏id字符串转为int数组
+        List<Forum> forums = forumService.selectCollectForum(array);
+        return forums;
+    }
+
+    /**
+     * 根据openid 和forumType查询出某个用户收藏的某种帖子  用于查询用户的对帖子的收藏状态
      * @param openid
      * @param forumType
      * @return
@@ -148,13 +174,13 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         VxUser vxUser = null;
         if(forumType == 1) {
            vxUser = selectLikeStatusUtil(openid, "goods_ids");
-           return vxUser.getGoodsIds() == null ?"" :vxUser.getGoodsIds();
+           return vxUser.getGoodsIds() == null? "" :vxUser.getGoodsIds();
         }else if(forumType == 2) {
             vxUser = selectLikeStatusUtil(openid, "room_ids");
-            return vxUser.getRoomIds() == null ?"" :vxUser.getRoomIds();
+            return vxUser.getRoomIds() == null? "" :vxUser.getRoomIds();
         }else {
             vxUser = selectLikeStatusUtil(openid, "job_ids");
-            return vxUser.getJobIds() == null ?"" :vxUser.getJobIds();
+            return vxUser.getJobIds() == null? "" :vxUser.getJobIds();
         }
     }
 
@@ -197,6 +223,59 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         return resultStatus.setCode("200").setMsg("ok");
     }
 
+    /**
+     * 查询用户是否学生身份认证
+     * @param openid
+     * @return
+     */
+    @Override
+    public Map<String, String> selectStudentCertification(String openid) {
+        QueryWrapper<VxUser> vxUserQueryWrapper = new QueryWrapper<>();
+        vxUserQueryWrapper.select("openid","school_exit").eq("openid",openid);
+        VxUser vxUser = baseMapper.selectOne(vxUserQueryWrapper);
+        return certificationStatus(vxUser.getSchoolExit());
+    }
+
+    /**
+     * 查询用户是否职工身份认证
+     * @param openid
+     * @return
+     */
+    @Override
+    public Map<String, String> selectStaffCertification(String openid) {
+        QueryWrapper<VxUser> vxUserQueryWrapper = new QueryWrapper<>();
+        vxUserQueryWrapper.select("openid","company_exit").eq("openid",openid);
+        VxUser vxUser = baseMapper.selectOne(vxUserQueryWrapper);
+        return certificationStatus(vxUser.getCompanyExit());
+    }
+
+    /**
+     * 根据状态码判断身份认证的阶段
+     * @param certificationCode
+     * @return
+     */
+    @Nullable
+    private Map<String, String> certificationStatus(int certificationCode) {
+        HashMap<String, String> certificationStatus = new HashMap<String,String>();
+        if (certificationCode == 0) {
+            certificationStatus.put("code", Integer.toString(certificationCode));
+            certificationStatus.put("status", "未认证");
+        }else if (certificationCode == 1) {
+            certificationStatus.put("code", Integer.toString(certificationCode));
+            certificationStatus.put("status", "已认证");
+        }else if (certificationCode == 2) {
+            certificationStatus.put("code", Integer.toString(certificationCode));
+            certificationStatus.put("status", "未审核");
+        }else if(certificationCode == 3) {
+            certificationStatus.put("code", Integer.toString(certificationCode));
+            certificationStatus.put("status", "审核中");
+        }else if (certificationCode == 4) {
+            certificationStatus.put("code", Integer.toString(certificationCode));
+            certificationStatus.put("status", "审核未通过");
+        }
+        return certificationStatus;
+    }
+
 
     private VxUser selectLikeStatusUtil(String openid, String attrName) {
         QueryWrapper<VxUser> collectWrapper = new QueryWrapper<>();
@@ -204,7 +283,7 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         return baseMapper.selectOne(collectWrapper);
     }
     /**
-     * 收藏时的查询工具
+     * 收藏时的查询工具，根据不同的attrName查询不同种类的收藏
      * @param openid
      * @param attrName
      * @return
@@ -215,5 +294,6 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         VxUser vxUser = baseMapper.selectOne(userWrapper);
         return vxUser;
     }
+
 
 }

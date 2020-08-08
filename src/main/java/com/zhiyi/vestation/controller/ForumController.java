@@ -52,6 +52,23 @@ public class ForumController {
     }
 
     /**
+     * 发布帖子
+     * @param forum
+     * @return
+     */
+    @RequestMapping("/publishForum")
+    public ResultStatus publishForum(Forum forum) {
+        int insert = forumService.insertForum(forum);
+        ResultStatus resultStatus = new ResultStatus();
+        if (forum == null) {
+            return resultStatus.setMsg("参数异常").setCode("0");
+        }else if(insert <= 0) {
+            return resultStatus.setCode("1").setMsg("发布失败，请检查参数");
+        }
+        return resultStatus.setMsg("ok").setCode("200");
+    }
+
+    /**
      * 删除我的动态
      * @param forumId
      * @return

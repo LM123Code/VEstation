@@ -6,6 +6,8 @@ import com.zhiyi.vestation.pojo.VxUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.elasticsearch.common.recycler.Recycler;
 
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +48,14 @@ public interface VxUserService extends IService<VxUser> {
     public ResultStatus collectForum(String openid, int forumId, int forumType);
 
     /**
-     * 根据openid 和forumType查询出某个用户收藏的某种帖子
+     * 查询某用户的收藏的帖子，用于我的动态展示
+     * @param openid
+     * @param forumType
+     * @return
+     */
+    public List selectCollectsOfUser(String openid, int forumType);
+    /**
+     * 根据openid 和forumType查询出某个用户收藏的某种帖子  用于查询用户的对帖子的收藏状态
      * @param openid
      * @param forumType
      * @return
@@ -60,10 +69,25 @@ public interface VxUserService extends IService<VxUser> {
      */
     public ResultStatus selectUserInfo(String openid);
 
+
     /**
      * 更新用户的信息
      * @param vxUser
      * @return
      */
     public ResultStatus updateUserInfo(VxUser vxUser);
+
+    /**
+     * 查询是否学生身份认证
+     * @param openid
+     * @return
+     */
+    public Map<String,String> selectStudentCertification(String openid);
+
+    /**
+     * 查询是否职工身份认真
+     * @param openid
+     * @return
+     */
+    public Map<String,String> selectStaffCertification(String openid);
 }

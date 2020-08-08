@@ -3,6 +3,7 @@ package com.zhiyi.vestation.service;
 import com.zhiyi.vestation.pojo.Forum;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zhiyi.vestation.pojo.ResultStatus;
+import org.apache.velocity.runtime.directive.contrib.For;
 
 import javax.xml.transform.Result;
 import java.util.List;
@@ -33,7 +34,7 @@ public interface ForumService extends IService<Forum> {
      * @param forumId
      * @return
      */
-    public String selectOpenid(int forumId);
+    public Forum selectOpenid(int forumId);
 
     /**
      * 我的动态
@@ -42,5 +43,17 @@ public interface ForumService extends IService<Forum> {
      */
     public ResultStatus selectMyForum(String openid, int page);
 
+    /**
+     * 根据收藏的帖子id查询所有的被收藏帖子的信息
+     * @return
+     */
+    public List<Forum> selectCollectForum(int[] collects);
+
+    /**
+     * 发布帖子
+     * @param forum
+     * @return
+     */
+    public int insertForum(Forum forum);
 
 }

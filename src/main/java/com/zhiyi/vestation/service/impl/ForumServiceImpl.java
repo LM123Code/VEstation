@@ -16,10 +16,7 @@ import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -98,11 +95,11 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
      * @return
      */
     @Override
-    public String selectOpenid(int forumId) {
+    public Forum selectOpenid(int forumId) {
         QueryWrapper<Forum> publishOpenidWrapper = new QueryWrapper<>();
-        publishOpenidWrapper.select("openid").eq("forum_id",forumId);
+        publishOpenidWrapper.select("openid","like_num","comment_unm").eq("forum_id",forumId);
         Forum forum = baseMapper.selectOne(publishOpenidWrapper);
-        return forum.getOpenid();
+        return forum;
     }
 
     /**
@@ -125,6 +122,29 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
             return resultStatus.setCode("1").setMsg("没有数据");
         }
         return resultStatus.setMsg("ok").setCode("200").setData(myForums);
+    }
+
+    /**
+     * 查询某用户收藏的帖子
+     * @return
+     */
+    @Override
+    public List<Forum> selectCollectForum(int[] collects) {
+        ArrayList<Forum> forums = new ArrayList<>(100);
+        for(int forumId: collects){
+            forums.add(baseMapper.selectById(forumId));
+        }
+        return forums;
+    }
+
+    /**
+     * 发布帖子
+     * @param forum
+     * @return
+     */
+    @Override
+    public int insertForum(Forum forum) {
+        return baseMapper.insert(forum);
     }
 
     /**

@@ -73,12 +73,17 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      */
     @Override
     public Status commentForum(Comment comment) {
+
         /**
          * 根据forumId查询出发布者的openid
          */
-        String publishOpenid = forumService.selectOpenid(comment.getForumId());
-        comment.setPublishOpenid(publishOpenid);
+        Forum forum = forumService.selectOpenid(comment.getForumId());
+        comment.setPublishOpenid(forum.getOpenid());
         comment.setLook(false);
+
+        //添加评论量
+        forum.setCommentNum(forum.getCommentNum() + 1);
+        forumService.updateById(forum);
         /**
          * 评论插入
          */

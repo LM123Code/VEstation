@@ -1,6 +1,7 @@
 package com.zhiyi.vestation.controller;
 
 
+import com.zhiyi.vestation.pojo.Forum;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.pojo.VxUser;
@@ -8,6 +9,7 @@ import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,6 +63,8 @@ public class VxUserController {
         return vxUserService.updateUserInfo(vxUser);
     }
 
+
+
     /**
      * 收藏帖子
      * @param openid  用户openid
@@ -71,6 +75,59 @@ public class VxUserController {
     @GetMapping("/collect")
     public ResultStatus collectForum(String openid, int forumId, int forumType) {
         return vxUserService.collectForum(openid,forumId,forumType);
+    }
+
+    /**
+     * 查询用户收藏
+     * @param openid
+     * @param forumType
+     * @return
+     */
+    @RequestMapping("/selectCollect")
+    public ResultStatus selectCollect(String openid, int forumType) {
+        List<Forum> list = vxUserService.selectCollectsOfUser(openid, forumType);
+        ResultStatus resultStatus = new ResultStatus();
+        if (openid == null || openid.equals("") || forumType <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (list == null || list.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }else {
+            return resultStatus.setMsg("ok").setCode("200").setData(list);
+        }
+    }
+
+    /**
+     * 查询学生身份认证
+     * @param openid
+     * @return
+     */
+    @GetMapping("/selectStudentCertification")
+    public ResultStatus selectStudentCertification(String openid) {
+        Map<String, String> certificationMap = vxUserService.selectStudentCertification(openid);
+        if (openid == null || openid.equals("")) {
+            return ResultStatus.builder().code("0").msg("参数异常").build();
+        }else if (certificationMap == null || certificationMap.size() == 0) {
+            return ResultStatus.builder().code("1").msg("查询异常，没有装填").build();
+        }else {
+            return ResultStatus.builder().code("200").msg("ok").data(certificationMap).build();
+        }
+    }
+
+    /**
+     * 查询用户是否职工认证
+     * @param openid
+     * @return
+     */
+    @GetMapping("/selectStaffCertification")
+    public ResultStatus selectStaffCertification(String openid) {
+        Map<String, String> certificationMap = vxUserService.selectStaffCertification(openid);
+        if (openid == null || openid.equals("")) {
+            return ResultStatus.builder().code("0").msg("参数异常").build();
+        }else if (certificationMap == null || certificationMap.size() == 0) {
+            return ResultStatus.builder().code("1").msg("查询异常，没有装填").build();
+        }else {
+            return ResultStatus.builder().code("200").msg("ok").data(certificationMap).build();
+        }
     }
 }
 

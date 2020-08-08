@@ -49,13 +49,14 @@ public class StarServiceImpl extends ServiceImpl<LikeMapper, Star> implements St
         /**
          * 1.查询出被点人文章人的发布者
          */
-        String publishOpenid = forumService.selectOpenid(star.getForumId());
+        Forum forum = forumService.selectOpenid(star.getForumId());
         /**
          * 2.点赞
          */
-        star.setPublishOpenid(publishOpenid);
+        star.setPublishOpenid(forum.getOpenid());
         star.setLook(false);
-
+        forum.setLikeNum(forum.getLikeNum() + 1);  //增加点赞量
+        forumService.updateById(forum);
         /**
          * 3.插入记录
          */

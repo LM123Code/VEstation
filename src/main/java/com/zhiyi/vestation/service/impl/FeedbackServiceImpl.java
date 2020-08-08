@@ -17,4 +17,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> implements FeedbackService {
 
+    /**
+     * 插入平台反馈记录
+     * @param feedback
+     * @return
+     */
+
+    @Override
+    public int insertFeedback(Feedback feedback) {
+        int insert = baseMapper.insert(feedback);
+        return insert;
+    }
 }
