@@ -75,6 +75,12 @@ public class Job implements Serializable {
     private String companyName;
 
     /**
+     * 公司图片
+     */
+    @Field(type = FieldType.Keyword)
+    private String images;
+
+    /**
      * 工作地址
      */
     @Field(type = FieldType.Keyword)
