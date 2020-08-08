@@ -50,7 +50,7 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
          */
         QueryWrapper<Forum> wrapper = new QueryWrapper<>();
         wrapper.eq("forum_type",forumType);
-        wrapper.orderByAsc("create_date");
+        wrapper.orderByDesc("create_date");
         Page<Forum> forumPage = new Page<Forum>(page,10);
         List<Forum> forums = baseMapper.selectPage(forumPage, wrapper).getRecords();
         /**

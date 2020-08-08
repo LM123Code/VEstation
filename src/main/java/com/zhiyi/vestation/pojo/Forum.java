@@ -52,6 +52,12 @@ public class Forum implements Serializable {
     private String forumContent;
 
     /**
+     * 帖子图片
+     */
+    @Field(type = FieldType.Keyword)
+    private String images;
+
+    /**
      * 发布人
      */
     @Field(type = FieldType.Keyword)
