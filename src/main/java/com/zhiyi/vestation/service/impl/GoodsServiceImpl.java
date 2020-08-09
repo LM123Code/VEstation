@@ -63,7 +63,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         QueryWrapper<Goods> wrapper = new QueryWrapper<>(); //创建包装
         wrapper.eq("exist", 1); //查询条件包装
 
-        wrapper.orderByDesc("createDate"); //根据分数倒序
+        wrapper.orderByDesc("create_date"); //根据分数倒序
 
         Page<Goods> page = new Page<>(p,20); //分页规则，第一页，每页20个
 
