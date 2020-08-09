@@ -93,7 +93,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         for (Job job:list) {
             String openid = job.getOpenid(); //获取当前岗位的发布者openid
             VxUser vxUser = map.get(openid); //从map中获取vxUser
-            if(vxUser != null){ //不存在就进行查询
+            if(vxUser == null){ //不存在就进行查询
                 vxUser = vxUserService.selectByWrapper(openid);
                 map.put(openid, vxUser); //加入map
             }

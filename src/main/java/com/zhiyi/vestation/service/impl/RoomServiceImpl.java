@@ -73,7 +73,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        List<Room> rooms = baseMapper.selectPage(page, wrapper).getRecords();//查询并获取记录
+        List<Room> rooms = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
         ResultStatus resultStatus = new ResultStatus();
         if (p <= 0) {
             return resultStatus.setMsg("参数异常").setCode("0");
@@ -94,7 +94,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
         for (Room room:list) {
             String openid = room.getOpenid(); //获取当前room的发布者openid
             VxUser vxUser = map.get(openid); //从map中获取vxUser
-            if(vxUser != null){ //不存在就进行查询
+            if(vxUser == null){ //不存在就进行查询
                 vxUser = vxUserService.selectByWrapper(openid);
                 map.put(openid, vxUser); //加入map
             }
