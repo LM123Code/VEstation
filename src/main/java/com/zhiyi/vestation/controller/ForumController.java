@@ -69,6 +69,23 @@ public class ForumController {
     }
 
     /**
+     * 编辑我的动态
+     * @param forum
+     * @return
+     */
+    @RequestMapping("/editForum")
+    public ResultStatus editForum(Forum forum) {
+        boolean update = forumService.updateById(forum);
+        if(forum == null || forum.getForumId() <= 0) {
+            return ResultStatus.builder().code("0").msg("参数异常").build();
+        }else if(update == false) {
+            return ResultStatus.builder().code("1").msg("编辑失败").build();
+        }else {
+            return ResultStatus.builder().code("200").msg("ok").build();
+        }
+    }
+
+    /**
      * 删除我的动态
      * @param forumId
      * @return

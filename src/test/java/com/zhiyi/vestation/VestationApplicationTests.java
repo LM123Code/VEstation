@@ -37,4 +37,14 @@ class VestationApplicationTests {
         System.out.println(ImgUtil.delete("440eed2b-2f6e-49d6-9e84-2aeb315170bb"));
     }*/
 
+    @Test
+    public void print(){
+        System.out.println("============================================");
+        String[] split = "3".split(",");
+        
+        System.out.println(split.length);
+        System.out.println(split[0]);
+        System.out.println(split.toString());
+    }
+
 }

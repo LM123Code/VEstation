@@ -147,6 +147,7 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         return baseMapper.insert(forum);
     }
 
+
     /**
      *工具类  每个帖子添加作者信息
      * @param list 帖子列表

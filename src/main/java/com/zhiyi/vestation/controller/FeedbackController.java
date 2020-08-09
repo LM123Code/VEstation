@@ -18,11 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-07-08
  */
 @RestController
-@RequestMapping("${api-url}$/feedback")
+@RequestMapping("${api-url}/feedback")
 public class FeedbackController {
     @Autowired
     FeedbackService feedbackService;
 
+    /**
+     * 平台反馈
+     * @param feedback
+     * @return
+     */
+    @RequestMapping("/feedback")
     public ResultStatus feedback(Feedback feedback) {
         int insert = feedbackService.insertFeedback(feedback);
         if (feedback == null) {

@@ -56,4 +56,5 @@ public interface ForumService extends IService<Forum> {
      */
     public int insertForum(Forum forum);
 
+
 }
