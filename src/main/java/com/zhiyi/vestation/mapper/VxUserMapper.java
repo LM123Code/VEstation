@@ -2,6 +2,7 @@ package com.zhiyi.vestation.mapper;
 
 import com.zhiyi.vestation.pojo.VxUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,7 @@ public interface VxUserMapper extends BaseMapper<VxUser> {
      * @param userAvatarUrl 头像url路径
      * @return
      */
+
     int insertOrUpdateByOpenid(String openid, String nickName, String userAvatarUrl);
 
 }

@@ -52,7 +52,6 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
     @Override
     public ResultStatus login(String appid, String secret, String js_code, String userAvatarUrl, String nickName) {
         Map map = new HashMap<>();
-
         //小程序唯一标识   (在微信小程序管理后台获取)
         String wxspAppid = appid;
         //小程序的 app secret (在微信小程序管理后台获取)
@@ -61,16 +60,19 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         //请求参数：唯一标识+秘钥+登录凭证
         String params = "appid=" + wxspAppid + "&secret=" + wxspSecret + "&js_code=" + js_code ;
         //发送请求
+        System.out.println(params);
         String sr = HttpRequest.sendGet("https://api.weixin.qq.com/sns/jscode2session", params);
         //解析相应内容（转换成json对象）
         JSONObject json = JSONObject.fromObject(sr);
         //获取会话密钥（session_key）
+        System.out.println(sr);
         String session_key = json.get("session_key").toString();
         //用户的微信唯一标识（openid）
         String openid = (String) json.get("openid");
 
 //        插入或更新用户
-        int status = baseMapper.insertOrUpdateByOpenid(openid, nickName, userAvatarUrl);
+
+        int status = vxUserMapper.insertOrUpdateByOpenid(openid, nickName, userAvatarUrl);
 
         ResultStatus resultStatus = new ResultStatus();
         if (js_code == null && js_code.length() == 0) {

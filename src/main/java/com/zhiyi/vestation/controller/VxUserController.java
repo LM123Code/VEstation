@@ -1,10 +1,7 @@
 package com.zhiyi.vestation.controller;
 
 
-import com.zhiyi.vestation.pojo.Forum;
-import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.Status;
-import com.zhiyi.vestation.pojo.VxUser;
+import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +34,16 @@ public class VxUserController {
      * @param nickName 昵称
      * @return
      */
-    @ResponseBody //将返回对象转化为json数据，写入response对象的body区
+
+//    @PostMapping("/login") //访问路径
+//    public ResultStatus login(String appid, String secret,String js_code, String userAvatarUrl, String nickName){
+//        return vxUserService.login(appid, secret, js_code, userAvatarUrl, nickName);
+//    }
     @PostMapping("/login") //访问路径
-    public ResultStatus login(String appid, String secret,String js_code, String userAvatarUrl, String nickName){
-        return vxUserService.login(appid, secret, js_code, userAvatarUrl, nickName);
+    public ResultStatus login(@RequestBody LoginPojo loginPojo){
+        System.out.println(loginPojo.toString());
+        return vxUserService.login(loginPojo.getAppid(), loginPojo.getSecret(), 
+                loginPojo.getJs_code(), loginPojo.getUserAvatarUrl(), loginPojo.getNickName());
     }
 
     /**
