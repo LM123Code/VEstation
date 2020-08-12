@@ -50,8 +50,7 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
      * @return
      */
     @Override
-    public ResultStatus login(String appid, String secret, String js_code, String userAvatarUrl, String nickName) {
-        Map map = new HashMap<>();
+    public VxUser login(String appid, String secret, String js_code, String userAvatarUrl, String nickName) {
         //小程序唯一标识   (在微信小程序管理后台获取)
         String wxspAppid = appid;
         //小程序的 app secret (在微信小程序管理后台获取)
@@ -71,14 +70,12 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         System.out.println("=====0"+openid);
         int status = vxUserMapper.insertOrUpdateByOpenid(openid, nickName, userAvatarUrl);
         
-        ResultStatus resultStatus = new ResultStatus();
-        if (js_code == null && js_code.length() == 0) {
-            return resultStatus.setCode("0").setMsg("参数异常");
-        }else if (status <= 0) {
-            return resultStatus.setCode("1").setMsg("登录失败");
+        if(status<=0){
+            return null;
+        }else {
+            return VxUser.builder().openid(openid).nickName(nickName).userAvatarUrl(userAvatarUrl).build();
         }
 
-        return resultStatus.setCode("200").setMsg("登录成功");
     }
 
     /**

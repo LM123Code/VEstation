@@ -1,5 +1,6 @@
 package com.zhiyi.vestation.pojo;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @since 2020-07-01
  */
 @Data
+@Builder
 public class VxUser implements Serializable {
 
     private static final long serialVersionUID = 1L;

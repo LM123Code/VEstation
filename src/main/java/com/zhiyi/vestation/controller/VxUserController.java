@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -27,11 +28,7 @@ public class VxUserController {
     /**
      * 登录方法
      *
-     * @param appid 小程序唯一标识
-     * @param secret
-     * @param js_code 登陆凭证
-     * @param userAvatarUrl 头像地址
-     * @param nickName 昵称
+     * @param loginPojo 登录信息对象
      * @return
      */
 
@@ -41,9 +38,17 @@ public class VxUserController {
 //    }
     @PostMapping("/login") //访问路径
     public ResultStatus login(@RequestBody LoginPojo loginPojo){
-        System.out.println(loginPojo.toString());
-        return vxUserService.login(loginPojo.getAppid(), loginPojo.getSecret(), 
+//        System.out.println(loginPojo.toString());
+        ResultStatus resultStatus = new ResultStatus();
+        if (loginPojo.getJs_code() == null && loginPojo.getJs_code().length() == 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }
+        VxUser vxUser= vxUserService.login(loginPojo.getAppid(), loginPojo.getSecret(),
                 loginPojo.getJs_code(), loginPojo.getUserAvatarUrl(), loginPojo.getNickName());
+        if (Objects.isNull(vxUser)) {
+            return resultStatus.setCode("1").setMsg("登录失败");
+        }
+        return resultStatus.setData("200").setMsg("登录成功").setData(vxUser);
     }
 
     /**

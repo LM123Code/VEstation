@@ -30,7 +30,7 @@ public interface VxUserService extends IService<VxUser> {
      * @param nickName 昵称
      * @return
      */
-    ResultStatus login(String appid, String secret, String js_code, String userAvatarUrl, String nickName);
+    VxUser login(String appid, String secret, String js_code, String userAvatarUrl, String nickName);
 
     /**
      * 获取vxUser的指定属性
