@@ -37,8 +37,8 @@ mybatis-plus:
     db-config:
       logic-delete-value: 0 #删除时设为0
       logic-not-delete-value: 1 #不删除时设为1
-#  mapper-locations: classpath:mybatis/mapper/*.xml #指定sql映射文件路径
-#  config-location: classpath:mybatis/mybatis-config.xml #指定mybatis-plus其他具体配置的路径
+  mapper-locations: classpath:mybatis/mapper/*.xml #指定sql映射文件路径
+  config-location: classpath:mybatis/mybatis-config.xml #指定mybatis-plus其他具体配置的路径
   type-aliases-package: com.zhiyi.vestation.pojo #实体类文件
 api-url: /ve #系统访问的根路径
 logging:

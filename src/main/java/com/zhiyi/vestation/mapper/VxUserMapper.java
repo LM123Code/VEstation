@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -27,4 +29,5 @@ public interface VxUserMapper extends BaseMapper<VxUser> {
 
     int insertOrUpdateByOpenid(String openid, String nickName, String userAvatarUrl);
 
-}
+    List<VxUser> mySelect();
+ }

@@ -60,20 +60,17 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         //请求参数：唯一标识+秘钥+登录凭证
         String params = "appid=" + wxspAppid + "&secret=" + wxspSecret + "&js_code=" + js_code ;
         //发送请求
-        System.out.println(params);
         String sr = HttpRequest.sendGet("https://api.weixin.qq.com/sns/jscode2session", params);
         //解析相应内容（转换成json对象）
         JSONObject json = JSONObject.fromObject(sr);
         //获取会话密钥（session_key）
-        System.out.println(sr);
         String session_key = json.get("session_key").toString();
         //用户的微信唯一标识（openid）
         String openid = (String) json.get("openid");
-
 //        插入或更新用户
-
+        System.out.println("=====0"+openid);
         int status = vxUserMapper.insertOrUpdateByOpenid(openid, nickName, userAvatarUrl);
-
+        
         ResultStatus resultStatus = new ResultStatus();
         if (js_code == null && js_code.length() == 0) {
             return resultStatus.setCode("0").setMsg("参数异常");
