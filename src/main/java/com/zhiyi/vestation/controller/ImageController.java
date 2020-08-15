@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -32,33 +31,26 @@ public class ImageController {
 
     /**
      * 上传图片
-     * @param multipartFiles  图片文件
+     * @param file  图片文件
      * @return 返回status查看状态
      * @throws IOException
      */
     @ResponseBody
-    @PostMapping("uploadImage")
-    public ResultStatus uploadImage(List<MultipartFile> multipartFiles) throws IOException {
-        if(Objects.isNull(multipartFiles)){
-            return ResultStatus.builder().code("1").msg("所选图片为空").build();
+    @PostMapping(value = "/uploadImage")
+    public ResultStatus uploadImage(MultipartFile file) throws IOException {
+        System.out.println("上传图片");
+        System.out.println(file);
+        byte[] image = file.getBytes();
+        Map<String, Object> map = imageService.uploadImage(image);
+        if ((int)map.get("code") != 200) {
+            return ResultStatus.builder().code("0").msg("上传失败").build();
         }
-        List<byte[]> images = multipartFiles.stream().map(multipartFile -> {
-            try {
-                return multipartFile.getBytes();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }).collect(Collectors.toList());
-        Map<String, Integer> map = imageService.uploadImage(images);
-        List<String> keys = new ArrayList<>();
-        for(Map.Entry<String, Integer> entry : map.entrySet()){
-            if (entry.getValue() == 200){
-                keys.add(entry.getKey());
-            }
-        }
-        return ResultStatus.builder().code("200").msg("上传成功" + keys.size() + "张图片").data(keys).build();
+        return ResultStatus.builder().code("200").msg("ok").data(map.get("key")).build();
     }
+
+    
+
+
 
     /**
      * 删除图片

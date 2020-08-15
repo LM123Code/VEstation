@@ -28,8 +28,8 @@ public class ImageServiceImpl implements ImageService {
      * @throws IOException
      */
     @Override
-    public Map<String, Integer> uploadImage(List<byte[]> images) {
-        return ImgUtil.uploadImg(images);
+    public Map<String, Object> uploadImage(byte[] image) {
+        return ImgUtil.uploadImg(image);
     }
 
     /**
