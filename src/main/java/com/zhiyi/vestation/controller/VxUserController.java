@@ -137,5 +137,15 @@ public class VxUserController {
             return ResultStatus.builder().code("200").msg("ok").data(certificationMap).build();
         }
     }
+
+    /**
+     * 身份认证
+     * @param vxUser
+     * @return
+     */
+    @PutMapping("/certification")
+    public ResultStatus identifyCertification(@RequestBody VxUser vxUser) {
+        return vxUserService.updateUserInfo(vxUser);
+    }
 }
 
