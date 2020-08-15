@@ -23,7 +23,7 @@ public interface ImageService {
      * @return 返回status查看状态
      * @throws IOException
      */
-    Map<String, Integer> uploadImage(List<byte[]> images);
+    Map<String, Object> uploadImage(byte[] image);
 
     /**
      * 删除图片

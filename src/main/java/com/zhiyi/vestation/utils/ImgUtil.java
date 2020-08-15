@@ -79,23 +79,22 @@ public class ImgUtil {
 
     /**
      * 上传图片
-     * @param base64s
+     * @param base64
      * @return   code=200代表上传成功，key为图片名称
      */
-    public static Map<String, Integer> uploadImg(List<byte[]> base64s){
+    public static Map<String, Object> uploadImg(byte[] base64){
 //        生成随机图片名称key
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         try {
-            for(byte[] base64 : base64s){
-                String key = UUID.randomUUID().toString();
-                ResultStatus resultStatus = new ResultStatus();
-                int code = 0;
-                code = put64image(base64, key);
-                if (code != 200) {
-                map.put(key, 0);
-                }else {
-                    map.put(key, 200);
-                }
+            String key = UUID.randomUUID().toString();
+            ResultStatus resultStatus = new ResultStatus();
+            int code = 0;
+            code = put64image(base64, key);
+            if (code != 200) {
+                map.put("code", code);
+            }else {
+                map.put("key", key);
+                map.put("code", code);
             }
         } catch (Exception e) {
             e.printStackTrace();
