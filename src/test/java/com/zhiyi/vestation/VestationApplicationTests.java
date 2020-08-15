@@ -1,6 +1,7 @@
 package com.zhiyi.vestation;
 
 import com.zhiyi.vestation.utils.ImgUtil;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,10 +16,12 @@ class VestationApplicationTests {
     void contextLoads() {
     }
 
-    *//**
+    */
+   /**
      * 图片上传测试
-     *//*
+     */
     @Test
+    @Ignore
     void testUploadImg(){
         File file = new File("F:\\我的文件\\照片\\二寸红.jpg");
         try {
@@ -29,7 +32,7 @@ class VestationApplicationTests {
         }
     }
 
-    *//**
+    /**
      * 图片删除测试
      *//*
     @Test
@@ -38,6 +41,7 @@ class VestationApplicationTests {
     }*/
 
     @Test
+    @Ignore
     public void print(){
         System.out.println("============================================");
         String[] split = "3".split(",");

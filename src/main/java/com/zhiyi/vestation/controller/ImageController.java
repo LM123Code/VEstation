@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +39,9 @@ public class ImageController {
     @ResponseBody
     @PostMapping(value = "/uploadImage")
     public ResultStatus uploadImage(MultipartFile file) throws IOException {
+        if(Objects.isNull(file)){
+            return ResultStatus.builder().code("0").msg("图片文件为空").build();
+        }
         System.out.println("上传图片");
         System.out.println(file);
         byte[] image = file.getBytes();
