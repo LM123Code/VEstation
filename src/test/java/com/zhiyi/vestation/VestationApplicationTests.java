@@ -20,7 +20,7 @@ class VestationApplicationTests {
    /**
      * 图片上传测试
      */
-    @Test
+/*    @Test
     @Ignore
     void testUploadImg(){
         File file = new File("F:\\我的文件\\照片\\二寸红.jpg");
@@ -30,7 +30,7 @@ class VestationApplicationTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * 图片删除测试
@@ -40,7 +40,7 @@ class VestationApplicationTests {
         System.out.println(ImgUtil.delete("440eed2b-2f6e-49d6-9e84-2aeb315170bb"));
     }*/
 
-    @Test
+    /*@Test
     @Ignore
     public void print(){
         System.out.println("============================================");
@@ -49,6 +49,6 @@ class VestationApplicationTests {
         System.out.println(split.length);
         System.out.println(split[0]);
         System.out.println(split.toString());
-    }
+    }*/
 
 }

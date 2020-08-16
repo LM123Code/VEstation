@@ -5,6 +5,8 @@ import com.zhiyi.vestation.pojo.Feedback;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -28,8 +30,8 @@ public class FeedbackController {
      * @param feedback
      * @return
      */
-    @RequestMapping("/feedback")
-    public ResultStatus feedback(Feedback feedback) {
+    @PostMapping("/feedback")
+    public ResultStatus feedback(@RequestBody Feedback feedback) {
         int insert = feedbackService.insertFeedback(feedback);
         if (feedback == null) {
             return ResultStatus.builder().code("0").msg("参数异常").build();
