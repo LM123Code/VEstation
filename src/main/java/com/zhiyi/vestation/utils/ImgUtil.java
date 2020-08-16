@@ -16,6 +16,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import javax.xml.transform.Result;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,10 +72,15 @@ public class ImgUtil {
                 .addHeader("Authorization", "UpToken " + getUpToken())
                 .post(rb).build();
         OkHttpClient client = new OkHttpClient();
-        okhttp3.Response response = client.newCall(request).execute();
+
+        try {
+            okhttp3.Response response = client.newCall(request).execute();
+            return response.code();
+        }catch (SocketTimeoutException e){
+            return 0;
+        }
 //        System.out.println(response.code());
-        //返回图片名称
-        return response.code();
+        //返回图片名
     }
 
     /**

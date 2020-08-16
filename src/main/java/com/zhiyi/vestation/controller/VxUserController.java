@@ -3,6 +3,7 @@ package com.zhiyi.vestation.controller;
 
 import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.service.VxUserService;
+import kotlin.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -139,13 +140,15 @@ public class VxUserController {
     }
 
     /**
-     * 身份认证
+     * 验证用户身份
      * @param vxUser
      * @return
      */
-    @PutMapping("/certification")
-    public ResultStatus identifyCertification(@RequestBody VxUser vxUser) {
-        return vxUserService.updateUserInfo(vxUser);
+
+    @PutMapping ("/certification")
+    public ResultStatus identifyCertificate(@RequestBody VxUser vxUser) {
+       return vxUserService.updateUserInfo(vxUser);
     }
+
 }
 

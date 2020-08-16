@@ -1,7 +1,9 @@
 package com.zhiyi.vestation.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -14,6 +16,8 @@ import java.io.Serializable;
  * @since 2020-07-01
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class VxUser implements Serializable {
 

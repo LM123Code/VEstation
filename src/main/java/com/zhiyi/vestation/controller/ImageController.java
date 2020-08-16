@@ -36,14 +36,12 @@ public class ImageController {
      * @return 返回status查看状态
      * @throws IOException
      */
-    @ResponseBody
+
     @PostMapping(value = "/uploadImage")
     public ResultStatus uploadImage(MultipartFile file) throws IOException {
         if(Objects.isNull(file)){
             return ResultStatus.builder().code("0").msg("图片文件为空").build();
         }
-        System.out.println("上传图片");
-        System.out.println(file);
         byte[] image = file.getBytes();
         Map<String, Object> map = imageService.uploadImage(image);
         if ((int)map.get("code") != 200) {
@@ -61,7 +59,7 @@ public class ImageController {
      * @param key 图片名称
      * @return 返回status状态
      */
-    @ResponseBody
+
     @GetMapping("delImage")
     public ResultStatus delImage(String key){
         return imageService.delImage(key);
