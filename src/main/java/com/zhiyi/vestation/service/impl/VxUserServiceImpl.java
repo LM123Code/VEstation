@@ -87,7 +87,7 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         QueryWrapper<VxUser> wrapper = new QueryWrapper<>();
         wrapper.select("openid","nick_name", "sex","name","user_avatar_url", "school_name","school_url",
                 "school_exit","profession","name", "phone_number", "wechat","company_name","company_url",
-                "company_exit").eq("openid",openid);
+                "company_exit","address").eq("openid",openid);
         return baseMapper.selectOne(wrapper);
 
     }

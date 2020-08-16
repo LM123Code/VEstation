@@ -64,7 +64,7 @@ public class GoodsController {
      */
     @ResponseBody
     @PostMapping("/uploadGoods")
-    public ResultStatus uploadGoods(Goods goods){
+    public ResultStatus uploadGoods(@RequestBody Goods goods){
         boolean b = goodsService.saveOrUpdate(goods);
         return b?new ResultStatus().setCode("200").setMsg("ok"):
                 new ResultStatus().setMsg("0").setMsg("更新失败请检查参数");
