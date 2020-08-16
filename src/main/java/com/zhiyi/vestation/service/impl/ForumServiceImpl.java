@@ -147,6 +147,16 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         return baseMapper.insert(forum);
     }
 
+    /**
+     * 根据forumId查询帖子信息
+     * @param forumId
+     * @return
+     */
+    @Override
+    public Forum selectByForumId(int forumId) {
+        return baseMapper.selectById(forumId);
+    }
+
 
     /**
      *工具类  每个帖子添加作者信息

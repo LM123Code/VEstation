@@ -57,4 +57,9 @@ public interface ForumService extends IService<Forum> {
     public int insertForum(Forum forum);
 
 
+    /**
+     * 根据forumID
+     * @return
+     */
+    public Forum selectByForumId(int forumId);
 }

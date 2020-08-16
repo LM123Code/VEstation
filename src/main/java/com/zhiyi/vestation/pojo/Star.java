@@ -54,4 +54,17 @@ public class Star implements Serializable {
      * 被点赞人Openid
      */
     private String publishOpenid;
+
+
+    /**
+     * 评论者
+     */
+    @TableField(exist = false)
+    VxUser user;
+
+    /**
+     * 帖子信息
+     */
+    @TableField(exist = false)
+    Forum forum;
 }
