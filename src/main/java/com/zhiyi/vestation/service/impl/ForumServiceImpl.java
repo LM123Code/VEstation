@@ -114,6 +114,12 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         myForumWrapper.orderByDesc("create_date");
         Page<Forum> myForumPage = new Page<>(page,10);  //分页
         List<Forum> myForums = baseMapper.selectPage(myForumPage, myForumWrapper).getRecords();
+        for (Forum item : myForums) {
+            String[] split = item.getImages().split(",");
+            item.setForumUrls(split);
+            System.out.println(item.getForumUrls());
+        }
+        //将图片处理成数组
 
         ResultStatus resultStatus = new ResultStatus();
         if (openid == null || openid.equals("") || page <= 0) {
@@ -209,5 +215,7 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         }
         return forums;
     }
+
+
 
 }

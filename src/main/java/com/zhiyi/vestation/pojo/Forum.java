@@ -1,6 +1,8 @@
 package com.zhiyi.vestation.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -108,6 +110,11 @@ public class Forum implements Serializable {
     @TableField(exist = false) //数据库不存在的字段
     private VxUser vxUser;
 
+    /**
+     * 帖子图片路径数组
+     */
+    @TableField(exist =  false)
+    private String[] forumUrls;
 
     /**
      * 评论
