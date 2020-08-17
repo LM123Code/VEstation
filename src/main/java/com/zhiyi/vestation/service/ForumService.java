@@ -58,4 +58,9 @@ public interface ForumService extends IService<Forum> {
 
     List<Forum> selectForumListAboutKeyWorlds(String key);
 
+    /**
+     * 根据forumID
+     * @return
+     */
+    public Forum selectByForumId(int forumId);
 }

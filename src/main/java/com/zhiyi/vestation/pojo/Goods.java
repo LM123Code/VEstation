@@ -1,12 +1,11 @@
 package com.zhiyi.vestation.pojo;
 
 import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.IdType;
+
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -72,6 +71,7 @@ public class Goods implements Serializable {
      * 发布时间
      */
     @Field(type = FieldType.Date,format = DateFormat.date)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date createDate;
 
     /**

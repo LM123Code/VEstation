@@ -7,6 +7,7 @@ import com.zhiyi.vestation.mapper.LikeMapper;
 import com.zhiyi.vestation.service.ForumService;
 import com.zhiyi.vestation.service.StarService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,9 @@ import java.util.List;
 public class StarServiceImpl extends ServiceImpl<LikeMapper, Star> implements StarService {
     @Autowired
     ForumService forumService;
+    @Autowired
+    VxUserService vxUserService;
+
 
     /**
      * 查询某用户是否点赞过某文章
@@ -93,6 +97,12 @@ public class StarServiceImpl extends ServiceImpl<LikeMapper, Star> implements St
         likeMessageWrapper.eq("publish_openid",publishOpenid);
         likeMessageWrapper.orderByDesc("create_date");
         List<Star> likes = baseMapper.selectPage(likePage, likeMessageWrapper).getRecords();
+        for (Star item: likes) {
+            //1.查询评论者信息
+            item.setUser(vxUserService.selectByWrapper(item.getOpenid()));
+            //2.查询被评论帖子的信息
+            item.setForum(forumService.selectByForumId(item.getForumId()));
+        }
         LikeMessage likeMessage = new LikeMessage(likes, unreadCount);
 
         ResultStatus resultStatus = new ResultStatus();

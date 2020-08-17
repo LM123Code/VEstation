@@ -1,11 +1,13 @@
 package com.zhiyi.vestation.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zhiyi.vestation.pojo.*;
+import com.zhiyi.vestation.pojo.Comment;
+import com.zhiyi.vestation.pojo.Forum;
 import com.zhiyi.vestation.mapper.ForumMapper;
+import com.zhiyi.vestation.pojo.ResultStatus;
+import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.CommentService;
 import com.zhiyi.vestation.service.ForumService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -115,6 +117,13 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         Page<Forum> myForumPage = new Page<>(page,10);  //分页
         List<Forum> myForums = baseMapper.selectPage(myForumPage, myForumWrapper).getRecords();
 
+        myForums.forEach(forum ->{
+            String[] split = forum.getImages().split(",");
+            forum.setForumUrls(split);
+        });
+        System.out.println(myForums);
+        //将图片处理成数组
+
         ResultStatus resultStatus = new ResultStatus();
         if (openid == null || openid.equals("") || page <= 0) {
             return resultStatus.setCode("0").setMsg("参数异常");
@@ -172,6 +181,16 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         return list;
     }
 
+    /**
+     * 根据forumId查询帖子信息
+     * @param forumId
+     * @return
+     */
+    @Override
+    public Forum selectByForumId(int forumId) {
+        return baseMapper.selectById(forumId);
+    }
+
 
     /**
      *工具类  每个帖子添加作者信息
@@ -224,5 +243,7 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
         }
         return forums;
     }
+
+
 
 }
