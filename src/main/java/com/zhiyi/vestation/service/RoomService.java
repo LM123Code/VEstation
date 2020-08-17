@@ -1,5 +1,6 @@
 package com.zhiyi.vestation.service;
 
+import com.zhiyi.vestation.pojo.Job;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Room;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -35,4 +36,11 @@ public interface RoomService extends IService<Room> {
      * @return 较完整的租房集合
      */
     List<Room> addVxUser(List<Room> list);
+
+    /**
+     * 通过一个模糊查询从数据库拿到关于room的信息
+     * @param key
+     * @return
+     */
+    List<Room> selectRoomListAboutKeyWorlds(String key);
 }

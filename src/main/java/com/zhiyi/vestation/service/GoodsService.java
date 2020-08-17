@@ -35,4 +35,11 @@ public interface GoodsService extends IService<Goods> {
      * @return 较完整的商品集合
      */
     List<Goods> addVxUser(List<Goods> list);
+
+    /**
+     * 通过keyworlds模糊查询good list
+     * @param key
+     * @return
+     */
+    List<Goods> selectGoodsListAboutKeyWorlds(String key);
 }

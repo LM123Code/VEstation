@@ -1,5 +1,6 @@
 package com.zhiyi.vestation.controller;
 
+import com.zhiyi.vestation.pojo.Job;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Room;
 import com.zhiyi.vestation.pojo.Status;
@@ -68,6 +69,17 @@ public class RoomController {
         boolean b = roomService.save(room);
         return b?new ResultStatus().setCode("200").setMsg("ok"):
                 new ResultStatus().setCode("1").setMsg("更新失败，请检查参数");
+    }
+
+    /**
+     * 传来关键字查询内容
+     * @param key 关键字
+     * @return
+     */
+    @PostMapping("/selectRoomsListAboutKeyWorlds")
+    public ResultStatus selectJobsListAboutKeyWorlds(String key){
+        List<Room> list = roomService.selectRoomListAboutKeyWorlds(key);
+        return new ResultStatus().setMsg("200").setMsg("查询成功").setData(list);
     }
 }
 

@@ -1,13 +1,11 @@
 package com.zhiyi.vestation.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zhiyi.vestation.pojo.Comment;
-import com.zhiyi.vestation.pojo.Forum;
+import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.mapper.ForumMapper;
-import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.CommentService;
 import com.zhiyi.vestation.service.ForumService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -34,6 +32,8 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
     CommentService commentService;
     @Autowired
     StarService starService;
+    @Autowired
+    ForumMapper forumMapper;
 
     /**
      * 通过fourm_type查询帖子
@@ -145,6 +145,31 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
     @Override
     public int insertForum(Forum forum) {
         return baseMapper.insert(forum);
+    }
+
+    @Override
+    public List<Forum> selectForumListAboutKeyWorlds(String key) {
+        QueryWrapper<Forum> queryWrapper = new QueryWrapper<>();
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("forum_title",key)
+                                .or().like("forum_content",key)
+        );
+        List<Forum> list = forumMapper.selectList(queryWrapper);
+
+//        QueryWrapper<Forum> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.or(
+//                wrapper->
+//                        wrapper.select("exist",String.valueOf(1))
+//                                .or().like("forum_title",key)
+//                                .or().like("forum_content",key)
+//        );
+//        List<Forum> list = forumMapper.selectList(queryWrapper);
+        return list;
     }
 
 

@@ -9,6 +9,7 @@ import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.JobService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhiyi.vestation.service.VxUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,9 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
 
     @Autowired
     VxUserService vxUserService;
+
+    @Autowired
+    JobMapper jobMapper;
 
     /**
      * 首页工作推荐
@@ -100,5 +104,27 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
             job.setVxUser(vxUser); //为每个岗位设置发布者信息
         }
         return list; //返回岗位列表
+    }
+
+    @Override
+    public List<Job> selectJobListAboutKeyWorlds(String key) {
+        QueryWrapper<Job> queryWrapper = new QueryWrapper<>();
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("job_class",key)
+                                .or().like("job_title",key)
+                                .or().like("job_desc",key)
+                                .or().like("company_name",key)
+                                .or().like("address",key)
+                                .or().like("email",key)
+                                .or().like("resume_format",key)
+                                .or().like("wechat",key)
+        );
+        List<Job> list = jobMapper.selectList(queryWrapper);
+        return list;
     }
 }

@@ -13,6 +13,7 @@ import com.zhiyi.vestation.service.VxUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhiyi.vestation.utils.HttpRequest;
 import org.apache.ibatis.annotations.Param;
+import org.apache.tomcat.util.descriptor.web.WebXml;
 import org.apache.velocity.runtime.directive.Parse;
 import org.apache.velocity.runtime.directive.contrib.For;
 import org.jetbrains.annotations.Nullable;
@@ -245,6 +246,16 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         vxUserQueryWrapper.select("openid","company_exit").eq("openid",openid);
         VxUser vxUser = baseMapper.selectOne(vxUserQueryWrapper);
         return certificationStatus(vxUser.getCompanyExit());
+    }
+
+    @Override
+    public List<VxUser> getAllUser() {
+        VxUser vxUser = new VxUser();
+        vxUser.setExist(true);
+        QueryWrapper<VxUser> vxUserQueryWrapper = new QueryWrapper<>();
+        vxUserQueryWrapper.eq("exist",1);
+        List<VxUser> users = vxUserMapper.selectList(vxUserQueryWrapper);
+        return users;
     }
 
     /**

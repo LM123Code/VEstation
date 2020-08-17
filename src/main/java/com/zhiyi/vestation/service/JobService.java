@@ -35,4 +35,11 @@ public interface JobService extends IService<Job> {
      * @return 较完整的岗位集合
      */
     List<Job> addVxUser(List<Job> list);
+
+    /**
+     * 通过一个模糊查询从数据库拿到关于job的信息
+     * @param key
+     * @return
+     */
+    List<Job> selectJobListAboutKeyWorlds(String key);
 }

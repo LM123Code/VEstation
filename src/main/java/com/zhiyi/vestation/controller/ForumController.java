@@ -2,15 +2,12 @@ package com.zhiyi.vestation.controller;
 
 
 import com.zhiyi.vestation.pojo.Forum;
+import com.zhiyi.vestation.pojo.Goods;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.service.ForumService;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +90,17 @@ public class ForumController {
     @GetMapping("/deleteForum")
     public ResultStatus deleteForum(int forumId) {
        return forumService.deleteForum(forumId);
+    }
+
+    /**
+     * 传来关键字查询内容
+     * @param key 关键字
+     * @return
+     */
+    @PostMapping("/selectForumListAboutKeyWorlds")
+    public ResultStatus selectForumListAboutKeyWorlds(String key){
+        List<Forum> list = forumService.selectForumListAboutKeyWorlds(key);
+        return new ResultStatus().setMsg("200").setMsg("查询成功").setData(list);
     }
 }
 

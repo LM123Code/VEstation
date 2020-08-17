@@ -90,4 +90,10 @@ public interface VxUserService extends IService<VxUser> {
      * @return
      */
     public Map<String,String> selectStaffCertification(String openid);
+
+    /**
+     * 获取所有用户信息
+     * @return
+     */
+    public List<VxUser> getAllUser();
 }

@@ -56,5 +56,6 @@ public interface ForumService extends IService<Forum> {
      */
     public int insertForum(Forum forum);
 
+    List<Forum> selectForumListAboutKeyWorlds(String key);
 
 }

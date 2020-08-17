@@ -2,6 +2,7 @@ package com.zhiyi.vestation.controller;
 
 
 import com.zhiyi.vestation.pojo.Goods;
+import com.zhiyi.vestation.pojo.Job;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.GoodsService;
@@ -68,6 +69,17 @@ public class GoodsController {
         boolean b = goodsService.saveOrUpdate(goods);
         return b?new ResultStatus().setCode("200").setMsg("ok"):
                 new ResultStatus().setMsg("0").setMsg("更新失败请检查参数");
+    }
+
+    /**
+     * 传来关键字查询内容
+     * @param key 关键字
+     * @return
+     */
+    @PostMapping("/selectGoodsListAboutKeyWorlds")
+    public ResultStatus selectGoodsListAboutKeyWorlds(String key){
+        List<Goods> list = goodsService.selectGoodsListAboutKeyWorlds(key);
+        return new ResultStatus().setMsg("200").setMsg("查询成功").setData(list);
     }
 }
 

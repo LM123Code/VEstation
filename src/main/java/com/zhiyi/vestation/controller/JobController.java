@@ -71,5 +71,16 @@ public class JobController {
         return b?new ResultStatus().setCode("200").setMsg("更新成功"):
                 new ResultStatus().setCode("0").setMsg("更新失败，请检查参数");
     }
+
+    /**
+     * 传来关键字查询内容
+     * @param key 关键字
+     * @return
+     */
+    @PostMapping("/selectJobsListAboutKeyWorlds")
+    public ResultStatus selectJobsListAboutKeyWorlds(String key){
+        List<Job> list = jobService.selectJobListAboutKeyWorlds(key);
+        return new ResultStatus().setMsg("200").setMsg("查询成功").setData(list);
+    }
 }
 

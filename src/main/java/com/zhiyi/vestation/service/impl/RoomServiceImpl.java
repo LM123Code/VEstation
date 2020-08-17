@@ -2,6 +2,7 @@ package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zhiyi.vestation.pojo.Goods;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Room;
 import com.zhiyi.vestation.mapper.RoomMapper;
@@ -28,6 +29,8 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Autowired
     VxUserService vxUserService;
+    @Autowired
+    RoomMapper roomMapper;
 
     /**
      * 获取首页租房信息列表
@@ -101,5 +104,24 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
             room.setVxUser(vxUser); //为每个room设置发布者信息
         }
         return list; //返回room列表
+    }
+
+    @Override
+    public List<Room> selectRoomListAboutKeyWorlds(String key) {
+            QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
+            queryWrapper.and(
+                    wrapper->
+                            wrapper.select("exist",String.valueOf(1))
+            );
+            queryWrapper.or(
+                    wrapper->
+                            wrapper.like("room_title",key)
+                                    .or().like("room_desc",key)
+                                    .or().like("address",key)
+                                    .or().like("room_class",key)
+                                    .or().like("contact",key)
+            );
+            List<Room> list = roomMapper.selectList(queryWrapper);
+            return list;
     }
 }

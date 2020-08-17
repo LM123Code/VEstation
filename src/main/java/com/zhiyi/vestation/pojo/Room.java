@@ -48,7 +48,7 @@ public class Room implements Serializable {
      * 房子描述
      */
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
-    private String rootDesc;
+    private String roomDesc;
 
     /**
      * 价格

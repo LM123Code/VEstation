@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhiyi.vestation.pojo.Goods;
 import com.zhiyi.vestation.mapper.GoodsMapper;
+import com.zhiyi.vestation.pojo.Job;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.GoodsService;
@@ -28,6 +29,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Autowired
     VxUserService vxUserService;
+
+    @Autowired
+    GoodsMapper goodsMapper;
+
 
     /**
      * 获取首页商品推荐
@@ -98,5 +103,23 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             goods.setVxUser(vxUser); //为每个商品设置发布者信息
         }
         return list; //返回商品列表
+    }
+
+    @Override
+    public List<Goods> selectGoodsListAboutKeyWorlds(String key) {
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("goods_title",key)
+                                .or().like("goods_desc",key)
+                                .or().like("submit_address",key)
+                                .or().like("contact",key)
+        );
+        List<Goods> list = goodsMapper.selectList(queryWrapper);
+        return list;
     }
 }
