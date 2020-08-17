@@ -95,7 +95,7 @@ class VestationApplicationTests {
         Assert.isTrue(b);
         b = systemMsgService.addSystemMsg("hi man");
         Assert.isTrue(b);
-        systemMsgService.setSystemMsgLookToTrue("123456","22");
+        //systemMsgService.setSystemMsgLookToTrue("123456","22");
         List<SystemMsg> systemMsgByOpenId = systemMsgService.getSystemMsgByOpenId("123456");
         for (SystemMsg systemMsg: systemMsgByOpenId) {
             System.out.println(systemMsg);
