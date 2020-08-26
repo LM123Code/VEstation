@@ -27,7 +27,11 @@ public interface GoodsService extends IService<Goods> {
      * @param p 页码
      * @return 商品列表
      */
-    ResultStatus getAllGoodsInPage(int p);
+    ResultStatus getAllGoodsInPage(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByPriceIncrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByPriceDecrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByViewIncrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByTimeIncrease(int p,String keyWorld);
 
     /**
      * 为集合中的商品添加发布者的属性

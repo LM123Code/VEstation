@@ -82,5 +82,27 @@ public class JobController {
         List<Job> list = jobService.selectJobListAboutKeyWorlds(key);
         return new ResultStatus().setMsg("200").setMsg("查询成功").setData(list);
     }
+
+    /**
+     * 根据不同请求返回不同的结果，降序，升序等等
+     */
+    @PostMapping("/selectJobListAboutKeyWithSomeCondition")
+    public ResultStatus selectJobListAboutKeyWithSomeCondition(int flag , int p , String key){
+        if (key == null){
+            key="";
+        }
+        ResultStatus resultStatus = null;
+        // 1、时间从近至远 2、价格从高到低  3、价格从低到高  4、根据views计算
+        if (flag == 1){
+            resultStatus = jobService.getAllGoodsInPageByTimeIncrease(p, key);
+        }else if (flag == 2){
+            resultStatus =jobService.getAllGoodsInPageByPriceDecrease(p,key);
+        }else if (flag == 3){
+            resultStatus =jobService.getAllGoodsInPageByPriceIncrease(p,key);
+        }else if (flag == 4){
+            resultStatus =jobService.getAllGoodsInPageByViewIncrease(p,key);
+        }
+        return resultStatus;
+    }
 }
 

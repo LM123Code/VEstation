@@ -28,7 +28,10 @@ public interface JobService extends IService<Job> {
      * @return job列表
      */
     ResultStatus getAllJobsInPage(int p);
-
+    ResultStatus getAllGoodsInPageByPriceIncrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByPriceDecrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByViewIncrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByTimeIncrease(int p,String keyWorld);
     /**
      * 为集合中的工作添加发布者的属性
      * @param list 工作集合
@@ -42,4 +45,8 @@ public interface JobService extends IService<Job> {
      * @return
      */
     List<Job> selectJobListAboutKeyWorlds(String key);
+
+    ResultStatus getAllJobsInPageByIncrease(int p);
+
+    ResultStatus getAllJobsInPageByDecrease(int p);
 }

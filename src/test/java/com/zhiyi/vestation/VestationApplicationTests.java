@@ -102,4 +102,16 @@ class VestationApplicationTests {
         }
     }
 
+    @Test
+    void testSelect1(){
+        ResultStatus allGoodsInPageByPriceDecrease = goodsService.getAllGoodsInPageByPriceDecrease(1, "");
+        ResultStatus allGoodsInPageByPriceIncrease = goodsService.getAllGoodsInPageByPriceIncrease(1, "");
+        ResultStatus allGoodsInPageByTimeIncrease = goodsService.getAllGoodsInPageByTimeIncrease(1, "");
+
+        ResultStatus allGoodsInPageByViewIncrease = goodsService.getAllGoodsInPageByViewIncrease(1, "婚纱");
+        List<Goods> goods = goodsService.selectGoodsListAboutKeyWorlds("婚纱");
+        System.out.println(1);
+    }
+
+
 }

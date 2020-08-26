@@ -1,7 +1,6 @@
 package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.mapper.CommentMapper;
@@ -12,12 +11,8 @@ import com.zhiyi.vestation.service.VxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.transform.Result;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -37,12 +32,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     /**
      * 根据forum_Id查询该帖子下所有的评论
      * @param forumId
+     * @param commentClass
      * @return
      */
     @Override
-    public ResultStatus selectByForumId(int forumId) {
+    public ResultStatus selectByForumId(int forumId, int commentClass) {
         QueryWrapper<Comment> commentWrapper = new QueryWrapper<>();
         commentWrapper.eq("forum_id",forumId);
+        commentWrapper.eq("comment_class",commentClass);
         List<Comment> comments = baseMapper.selectList(commentWrapper);  //查询出所有的实体
         List<Comment> firstComments = comments.stream().filter(comment -> {
             return comment.getReplyId().equals("-1");        //查出一级评论

@@ -60,5 +60,11 @@ public class AdController {
         return b?new ResultStatus().setCode("200").setMsg("ok") :
                 new ResultStatus().setMsg("删除失败").setCode("1");
     }
+
+    @GetMapping("/getAds")
+    public ResultStatus getAds(){
+
+        return new ResultStatus().setCode("200").setMsg("ok");
+    }
 }
 

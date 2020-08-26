@@ -2,11 +2,8 @@ package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zhiyi.vestation.pojo.Goods;
-import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.Room;
+import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.mapper.RoomMapper;
-import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.RoomService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhiyi.vestation.service.VxUserService;
@@ -84,6 +81,134 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
             return resultStatus.setMsg("没有数据").setCode("1");
         }
         return resultStatus.setCode("200").setMsg("ok").setData(rooms);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByPriceIncrease(int p, String key) {
+        QueryWrapper<Room> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("room_title",key)
+                                .or().like("room_desc",key)
+                                .or().like("address",key)
+                                .or().like("room_class",key)
+                                .or().like("contact",key)
+        );
+        queryWrapper.orderByDesc("job_price"); //根据分数倒序
+        Page<Room> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Room> roomList = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (roomList == null || roomList.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(roomList);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByPriceDecrease(int p, String key) {
+        QueryWrapper<Room> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("room_title",key)
+                                .or().like("room_desc",key)
+                                .or().like("address",key)
+                                .or().like("room_class",key)
+                                .or().like("contact",key)
+        );
+        queryWrapper.orderByAsc("job_price"); //根据分数倒序
+        Page<Room> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Room> roomList = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (roomList == null || roomList.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(roomList);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByViewIncrease(int p, String key) {
+        QueryWrapper<Room> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("room_title",key)
+                                .or().like("room_desc",key)
+                                .or().like("address",key)
+                                .or().like("room_class",key)
+                                .or().like("contact",key)
+        );
+        queryWrapper.orderByDesc("views"); //根据分数倒序
+        Page<Room> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Room> roomList = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (roomList == null || roomList.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(roomList);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByTimeIncrease(int p, String key) {
+        QueryWrapper<Room> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("room_title",key)
+                                .or().like("room_desc",key)
+                                .or().like("address",key)
+                                .or().like("room_class",key)
+                                .or().like("contact",key)
+        );
+        queryWrapper.orderByDesc("create_date"); //根据分数倒序
+        Page<Room> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Room> roomList = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (roomList == null || roomList.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(roomList);
     }
 
     /**

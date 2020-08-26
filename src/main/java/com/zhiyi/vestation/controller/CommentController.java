@@ -2,7 +2,6 @@ package com.zhiyi.vestation.controller;
 
 
 import com.zhiyi.vestation.pojo.Comment;
-import com.zhiyi.vestation.pojo.CommentMessage;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.CommentService;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * <p>
@@ -30,12 +27,13 @@ public class CommentController {
 
     /**
      * 根据forum查询贴的一级评论
-     * @param forumId
+     * @param forumId 帖子id
+     * @param commentClass 对应的类别
      * @return
      */
     @RequestMapping("/selectComments")
-    public ResultStatus selectFirstComment(int forumId) {
-       return commentService.selectByForumId(forumId);
+    public ResultStatus selectFirstComment(int forumId,int commentClass) {
+       return commentService.selectByForumId(forumId, commentClass);
     }
 
     /**

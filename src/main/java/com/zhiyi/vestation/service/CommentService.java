@@ -2,7 +2,6 @@ package com.zhiyi.vestation.service;
 
 import com.zhiyi.vestation.pojo.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.zhiyi.vestation.pojo.CommentMessage;
 import com.zhiyi.vestation.pojo.ResultStatus;
 import com.zhiyi.vestation.pojo.Status;
 
@@ -20,9 +19,10 @@ public interface CommentService extends IService<Comment> {
     /**
      * 根据forum_id查询该帖子下的所有评论
      * @param forumId
+     * @param commentClass
      * @return
      */
-    public ResultStatus selectByForumId(int forumId);
+    public ResultStatus selectByForumId(int forumId,int commentClass);
 
     /**
      * 评论功能

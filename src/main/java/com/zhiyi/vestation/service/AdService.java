@@ -21,4 +21,7 @@ public interface AdService extends IService<Ad> {
      * @return
      */
     ResultStatus getFirstPageList();
+
+
+    List<Ad> getAds();
 }

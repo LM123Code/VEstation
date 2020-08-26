@@ -29,6 +29,10 @@ public interface RoomService extends IService<Room> {
      * @return room列表
      */
     ResultStatus getAllRoomsInPage(int p);
+    ResultStatus getAllGoodsInPageByPriceIncrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByPriceDecrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByViewIncrease(int p,String keyWorld);
+    ResultStatus getAllGoodsInPageByTimeIncrease(int p,String keyWorld);
 
     /**
      * 为集合中的租房添加发布者的属性

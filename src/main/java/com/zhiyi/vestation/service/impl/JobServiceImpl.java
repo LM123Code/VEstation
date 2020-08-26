@@ -2,6 +2,7 @@ package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zhiyi.vestation.pojo.Goods;
 import com.zhiyi.vestation.pojo.Job;
 import com.zhiyi.vestation.mapper.JobMapper;
 import com.zhiyi.vestation.pojo.ResultStatus;
@@ -9,7 +10,6 @@ import com.zhiyi.vestation.pojo.VxUser;
 import com.zhiyi.vestation.service.JobService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhiyi.vestation.service.VxUserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +86,146 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         return resultStatus.setMsg("ok").setCode("200").setData(jobs);
     }
 
+    @Override
+    public ResultStatus getAllGoodsInPageByPriceIncrease(int p, String key) {
+        QueryWrapper<Job> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("job_class",key)
+                                .or().like("job_title",key)
+                                .or().like("job_desc",key)
+                                .or().like("company_name",key)
+                                .or().like("address",key)
+                                .or().like("email",key)
+                                .or().like("resume_format",key)
+                                .or().like("wechat",key)
+        );
+        queryWrapper.orderByDesc("job_price"); //根据分数倒序
+        Page<Job> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Job> jobList = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (jobList == null || jobList.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(jobList);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByPriceDecrease(int p, String key) {
+        QueryWrapper<Job> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("job_class",key)
+                                .or().like("job_title",key)
+                                .or().like("job_desc",key)
+                                .or().like("company_name",key)
+                                .or().like("address",key)
+                                .or().like("email",key)
+                                .or().like("resume_format",key)
+                                .or().like("wechat",key)
+        );
+        queryWrapper.orderByAsc("job_price"); //根据分数倒序
+        Page<Job> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Job> jobList = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (jobList == null || jobList.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(jobList);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByViewIncrease(int p, String key) {
+        QueryWrapper<Job> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("job_class",key)
+                                .or().like("job_title",key)
+                                .or().like("job_desc",key)
+                                .or().like("company_name",key)
+                                .or().like("address",key)
+                                .or().like("email",key)
+                                .or().like("resume_format",key)
+                                .or().like("wechat",key)
+        );
+        queryWrapper.orderByDesc("views"); //根据分数倒序
+        Page<Job> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Job> jobList = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (jobList == null || jobList.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(jobList);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByTimeIncrease(int p, String key) {
+        QueryWrapper<Job> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+        queryWrapper.or(
+                wrapper->
+                        wrapper.like("job_class",key)
+                                .or().like("job_title",key)
+                                .or().like("job_desc",key)
+                                .or().like("company_name",key)
+                                .or().like("address",key)
+                                .or().like("email",key)
+                                .or().like("resume_format",key)
+                                .or().like("wechat",key)
+        );
+        queryWrapper.orderByDesc("create_date"); //根据分数倒序
+        Page<Job> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Job> jobList = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (jobList == null || jobList.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(jobList);
+    }
+
     /**
      * 为集合中的工作添加发布者的属性
      * @param list 工作集合
@@ -127,4 +267,52 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         List<Job> list = jobMapper.selectList(queryWrapper);
         return list;
     }
+
+    @Override
+    public ResultStatus getAllJobsInPageByIncrease(int p) {
+        QueryWrapper<Job> wrapper = new QueryWrapper<>(); //创建包装
+        wrapper.eq("exist", 1); //查询条件包装
+
+        wrapper.orderByDesc("job_price"); //根据分数倒序
+
+        Page<Job> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Job> jobs = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setMsg("参数异常").setCode("0");
+        }else if (jobs == null || jobs.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(jobs);
+    }
+
+    @Override
+    public ResultStatus getAllJobsInPageByDecrease(int p) {
+        QueryWrapper<Job> wrapper = new QueryWrapper<>(); //创建包装
+        wrapper.eq("exist", 1); //查询条件包装
+
+        wrapper.orderByAsc("job_price"); //根据分数倒序
+
+        Page<Job> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Job> jobs = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setMsg("参数异常").setCode("0");
+        }else if (jobs == null || jobs.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(jobs);
+    }
+
+
 }

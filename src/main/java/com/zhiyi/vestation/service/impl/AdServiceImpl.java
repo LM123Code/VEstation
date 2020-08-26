@@ -39,4 +39,11 @@ public class AdServiceImpl extends ServiceImpl<AdMapper, Ad> implements AdServic
         }
         return resultStatus.setMsg("ok").setCode("200").setData(ads);
     }
+
+    @Override
+    public List<Ad> getAds() {
+        QueryWrapper<Ad> wrapper = new QueryWrapper<>();
+        List<Ad> adList = baseMapper.selectList(wrapper);
+        return adList;
+    }
 }

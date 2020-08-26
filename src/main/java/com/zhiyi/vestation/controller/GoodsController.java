@@ -44,7 +44,7 @@ public class GoodsController {
     @ResponseBody
     @GetMapping("/allGoods")
     public ResultStatus getAllGoodsInPage(int p){
-        return goodsService.getAllGoodsInPage(p);
+        return goodsService.getAllGoodsInPage(p,null);
     }
 
     /**
@@ -80,6 +80,27 @@ public class GoodsController {
     public ResultStatus selectGoodsListAboutKeyWorlds(String key){
         List<Goods> list = goodsService.selectGoodsListAboutKeyWorlds(key);
         return new ResultStatus().setMsg("200").setMsg("查询成功").setData(list);
+    }
+    /**
+     * 根据不同请求返回不同的结果，降序，升序等等
+     */
+    @PostMapping("/selectGoodsListAboutKeyWithSomeCondition")
+    public ResultStatus selectGoodsListAboutKeyWithSomeCondition(int flag , int p , String key){
+        if (key == null){
+            key="";
+        }
+        ResultStatus resultStatus = null;
+        // 1、时间从近至远 2、价格从高到低  3、价格从低到高  4、根据views计算
+        if (flag == 1){
+            resultStatus = goodsService.getAllGoodsInPageByTimeIncrease(p, key);
+        }else if (flag == 2){
+            resultStatus =goodsService.getAllGoodsInPageByPriceDecrease(p,key);
+        }else if (flag == 3){
+            resultStatus =goodsService.getAllGoodsInPageByPriceIncrease(p,key);
+        }else if (flag == 4){
+            resultStatus =goodsService.getAllGoodsInPageByViewIncrease(p,key);
+        }
+        return resultStatus;
     }
 }
 

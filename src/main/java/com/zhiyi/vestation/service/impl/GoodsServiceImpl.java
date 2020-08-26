@@ -64,7 +64,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @return 商品列表
      */
     @Override
-    public ResultStatus getAllGoodsInPage(int p) {
+    public ResultStatus getAllGoodsInPage(int p,String keyWorld) {
         QueryWrapper<Goods> wrapper = new QueryWrapper<>(); //创建包装
         wrapper.eq("exist", 1); //查询条件包装
 
@@ -76,6 +76,134 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
          * 应该从ES中查询，上述是从mysql查询
          */
         List<Goods> goods = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (goods == null || goods.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(goods);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByPriceIncrease(int p,String key) {
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+            queryWrapper.or(
+                    wrapper->
+                            wrapper.like("goods_title",key)
+                                    .or().like("goods_desc",key)
+                                    .or().like("submit_address",key)
+                                    .or().like("contact",key)
+            );
+        queryWrapper.orderByDesc("goods_price"); //根据分数倒序
+        Page<Goods> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Goods> goods = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (goods == null || goods.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(goods);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByPriceDecrease(int p,String key) {
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+            queryWrapper.or(
+                    wrapper->
+                            wrapper.like("goods_title",key)
+                                    .or().like("goods_desc",key)
+                                    .or().like("submit_address",key)
+                                    .or().like("contact",key)
+            );
+        queryWrapper.orderByAsc("goods_price"); //根据分数倒序
+
+        Page<Goods> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Goods> goods = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (goods == null || goods.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(goods);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByViewIncrease(int p, String key) {
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+            queryWrapper.or(
+                    wrapper->
+                            wrapper.like("goods_title",key)
+                                    .or().like("goods_desc",key)
+                                    .or().like("submit_address",key)
+                                    .or().like("contact",key)
+            );
+        queryWrapper.orderByDesc("views"); //根据分数倒序
+
+        Page<Goods> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Goods> goods = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
+        ResultStatus resultStatus = new ResultStatus();
+        if (p <= 0) {
+            return resultStatus.setCode("0").setMsg("参数异常");
+        }else if (goods == null || goods.size() == 0) {
+            return resultStatus.setCode("1").setMsg("没有数据");
+        }
+        return resultStatus.setMsg("ok").setCode("200").setData(goods);
+    }
+
+    @Override
+    public ResultStatus getAllGoodsInPageByTimeIncrease(int p, String key ) {
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>(); //创建包装
+        queryWrapper.and(
+                wrapper->
+                        wrapper.select("exist",String.valueOf(1))
+        );
+        //看看是不是空的，是空的就不去弄
+
+            queryWrapper.or(
+                    wrapper->
+                            wrapper.like("goods_title",key)
+                                    .or().like("goods_desc",key)
+                                    .or().like("submit_address",key)
+                                    .or().like("contact",key)
+            );
+        queryWrapper.orderByDesc("create_date"); //根据分数倒序
+
+        Page<Goods> page = new Page<>(p,20); //分页规则，第一页，每页20个
+
+        /**
+         * 应该从ES中查询，上述是从mysql查询
+         */
+        List<Goods> goods = addVxUser(baseMapper.selectPage(page, queryWrapper).getRecords());//查询并获取记录
         ResultStatus resultStatus = new ResultStatus();
         if (p <= 0) {
             return resultStatus.setCode("0").setMsg("参数异常");
