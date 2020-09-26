@@ -1,21 +1,28 @@
 package com.zhiyi.vestation;
 
-import com.zhiyi.vestation.mapper.GoodsMapper;
+import com.baidu.aip.ocr.AipOcr;
+import com.baidu.aip.util.Base64Util;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.service.*;
-import com.zhiyi.vestation.utils.ImgUtil;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.apache.velocity.runtime.directive.Foreach;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class VestationApplicationTests {
@@ -32,44 +39,12 @@ class VestationApplicationTests {
     VxUserService vxUserService;
     @Autowired
     SystemMsgService systemMsgService;
-   /* @Test
-    void contextLoads() {
-    }
 
-    */
-   /**
-     * 图片上传测试
-     */
-/*    @Test
-    @Ignore
-    void testUploadImg(){
-        File file = new File("F:\\我的文件\\照片\\二寸红.jpg");
-        try {
-            byte[] fileBytes = Files.readAllBytes(file.toPath());
-            System.out.println(ImgUtil.uploadImg(fileBytes));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
+    //设置APPID/AK/SK
+    public static final String APP_ID = "22756032";
+    public static final String API_KEY = "imUDY6Lg9TZDI0SyoiOsdRFt";
+    public static final String SECRET_KEY = "AmXKEdth3wpUdf5NcCLSGgrHCsdG8BiN";
 
-    /**
-     * 图片删除测试
-     *//*
-    @Test
-    void testDelImg(){
-        System.out.println(ImgUtil.delete("440eed2b-2f6e-49d6-9e84-2aeb315170bb"));
-    }*/
-
-    /*@Test
-    @Ignore
-    public void print(){
-        System.out.println("============================================");
-        String[] split = "3".split(",");
-        
-        System.out.println(split.length);
-        System.out.println(split[0]);
-        System.out.println(split.toString());
-    }*/
 
     @Test
     void testSelect(){
@@ -111,6 +86,85 @@ class VestationApplicationTests {
         ResultStatus allGoodsInPageByViewIncrease = goodsService.getAllGoodsInPageByViewIncrease(1, "婚纱");
         List<Goods> goods = goodsService.selectGoodsListAboutKeyWorlds("婚纱");
         System.out.println(1);
+    }
+    @Test
+    void fun12() throws UnsupportedEncodingException {
+
+        // 初始化一个AipOcr
+        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+
+        // 可选：设置网络连接参数
+        client.setConnectionTimeoutInMillis(2000);
+        client.setSocketTimeoutInMillis(60000);
+
+        // 可选：设置log4j日志输出格式，若不设置，则使用默认配置
+        // 也可以直接通过jvm启动参数设置此环境变量
+        System.setProperty("aip.log4j.conf", "path/to/your/log4j.properties");
+
+        // 传入可选参数调用接口
+        HashMap<String, String> options = new HashMap<String, String>();
+        options.put("detect_direction", "true");
+        options.put("probability", "false");
+
+        String file = "C:\\Users\\27548\\Desktop\\2.jpg" ;
+        try {
+            URL url = new URL("https://qiniu.mutou135468.top/0a4ff718-c017-11ea-a3a5-00163e0a349f.jpg");
+            BufferedImage img = ImageIO.read(url);
+            ImageIO.write(img, "jpg", new File(file));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        downloadImage();
+
+        // 参数为本地图片二进制数组
+        JSONObject jsonObject = client.basicAccurateGeneral("C:\\Users\\27548\\Desktop\\0a4ff718-c017-11ea-a3a5-00163e0a349f.jpg", options);
+        JSONArray jsonArray = (JSONArray) jsonObject.get("words_result");
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i = 0 ; i < jsonArray.length(); i++){
+            String o =jsonArray.get(i).toString();
+            JSONObject worldLine = new JSONObject(o);
+            String words = worldLine.get("words").toString();
+            stringBuffer.append(" " + words);
+        }
+        int indexOf = stringBuffer.indexOf("殷家乐");
+        int indexOf1 = stringBuffer.indexOf("老干妈");
+        int indexOf2 = stringBuffer.indexOf("测开");
+        if (indexOf==-1 || indexOf1==-1 || indexOf2==-1){
+            System.out.println("不合格");
+        }else {
+            System.out.println("合格");
+        }
+        System.out.println(jsonObject.toString(2));
+    }
+
+    public static void downloadImage(){
+
+    }
+    public static byte[] ImageToBase64ByOnline(String imgURL) {
+        ByteArrayOutputStream data = new ByteArrayOutputStream();
+        try {
+            // 创建URL
+            URL url = new URL(imgURL);
+            byte[] by = new byte[1024];
+            // 创建链接
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5000);
+            InputStream is = conn.getInputStream();
+            // 将内容读取内存中
+            int len = -1;
+            while ((len = is.read(by)) != -1) {
+                data.write(by, 0, len);
+            }
+            // 关闭流
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 对字节数组Base64编码
+
+        return Base64Util.decode(data.toByteArray().toString());
     }
 
 

@@ -42,6 +42,11 @@
             <version>1.2.62</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>3.8.0</version>
+        </dependency>
         <!--        事务切面配置启动类-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,9 +72,9 @@
         </dependency>
         <!--        七牛云图片服务器用到的jar包-->
         <dependency>
-            <groupId>com.qiniu</groupId>
-            <artifactId>qiniu-java-sdk</artifactId>
-            <version>7.2.7</version>
+            <groupId>com.github.zouchanglin</groupId>
+            <artifactId>storage-spring-boot-starter</artifactId>
+            <version>1.1</version>
         </dependency>
 <!--        七牛云图片上传依赖工具类-->
         <dependency>
@@ -119,7 +124,12 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
         </dependency>
-
+<!--百度云-->
+        <dependency>
+            <groupId>com.baidu.aip</groupId>
+            <artifactId>java-sdk</artifactId>
+            <version>4.15.1</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -137,6 +147,13 @@
             </exclusions>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

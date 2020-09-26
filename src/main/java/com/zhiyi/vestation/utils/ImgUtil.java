@@ -39,7 +39,7 @@ public class ImgUtil {
     // 密钥配置
     private static final Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
     // 测试域名，只有30天有效期
-    private static final String QINIU_IMAGE_CDNS = "qcu6llba8.bkt.clouddn.com";
+    private static final String QINIU_IMAGE_CDNS = "s3-cn-south-1.qiniucs.com";
     private static final Configuration cfg = new Configuration(Zone.zone2());//设置空间上传域名
 
     /**

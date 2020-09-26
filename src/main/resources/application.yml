@@ -44,3 +44,12 @@ api-url: /ve #系统访问的根路径
 logging:
   level:
     com.zhiyi.vestation.mapper: debug
+
+
+qiniu:
+  access-key: L-5Kq9EPN507_TujPf_5v-VOTAT7V7m3p_5VW1df
+  secret-key: -8vNTYcj8BR2wL6lsyr8a5Y81ttfgK3qJJ2CmtkY
+  # 空间配置
+  bucket-name: weiyizhan
+  # 机房配置 huadong、huabei、huanan、beimei、xinjiapo
+  region: huanan

@@ -1,12 +1,17 @@
 package com.zhiyi.vestation.controller;
 
 
+import cn.binarywang.wx.miniapp.api.WxMaService;
+import cn.binarywang.wx.miniapp.api.WxMaUserService;
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.service.VxUserService;
 import kotlin.Result;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,6 +31,10 @@ public class VxUserController {
     @Autowired
     VxUserService vxUserService;//注入微信用户的service对象
 
+    @Autowired
+    HttpSession httpSession;
+
+
     /**
      * 登录方法
      *
@@ -37,6 +46,7 @@ public class VxUserController {
 //    public ResultStatus login(String appid, String secret,String js_code, String userAvatarUrl, String nickName){
 //        return vxUserService.login(appid, secret, js_code, userAvatarUrl, nickName);
 //    }
+
     @PostMapping("/login") //访问路径
     public ResultStatus login(@RequestBody LoginPojo loginPojo){
 //        System.out.println(loginPojo.toString());
@@ -44,10 +54,11 @@ public class VxUserController {
         if (loginPojo.getJs_code() == null && loginPojo.getJs_code().length() == 0) {
             return resultStatus.setCode("0").setMsg("参数异常");
         }
-        VxUser vxUser= vxUserService.login(loginPojo.getAppid(), loginPojo.getSecret(),
-                loginPojo.getJs_code(), loginPojo.getUserAvatarUrl(), loginPojo.getNickName());
+        VxUser vxUser= vxUserService.login("wx16428bb434005c77", "a5624146cbb42bb87c674bb695f4bf1e",
+                loginPojo.getJs_code());
+        httpSession.setAttribute("vxUser",vxUser);
         if (Objects.isNull(vxUser)) {
-            return resultStatus.setCode("1").setMsg("登录失败");
+            return resultStatus.setCode("700").setMsg("新用户登录");
         }
         return resultStatus.setData("200").setMsg("登录成功").setData(vxUser);
     }

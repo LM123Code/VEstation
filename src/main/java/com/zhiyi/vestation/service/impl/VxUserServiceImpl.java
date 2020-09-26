@@ -2,9 +2,6 @@ package com.zhiyi.vestation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.zhiyi.vestation.mapper.GoodsMapper;
-import com.zhiyi.vestation.mapper.JobMapper;
-import com.zhiyi.vestation.mapper.RoomMapper;
 import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.mapper.VxUserMapper;
 
@@ -13,9 +10,6 @@ import com.zhiyi.vestation.service.VxUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zhiyi.vestation.utils.HttpRequest;
 import org.apache.ibatis.annotations.Param;
-import org.apache.tomcat.util.descriptor.web.WebXml;
-import org.apache.velocity.runtime.directive.Parse;
-import org.apache.velocity.runtime.directive.contrib.For;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import net.sf.json.JSONObject;
@@ -40,18 +34,17 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
     @Autowired
     ForumService forumService;
 
+
     /**
      * 登录方法
      *
      * @param appid 小程序唯一标识
      * @param secret
      * @param js_code 登陆凭证
-     * @param userAvatarUrl 头像地址
-     * @param nickName 昵称
      * @return
      */
     @Override
-    public VxUser login(String appid, String secret, String js_code, String userAvatarUrl, String nickName) {
+    public VxUser login(String appid, String secret, String js_code) {
         //小程序唯一标识   (在微信小程序管理后台获取)
         String wxspAppid = appid;
         //小程序的 app secret (在微信小程序管理后台获取)
@@ -69,12 +62,12 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
         String openid = (String) json.get("openid");
 //        插入或更新用户
         System.out.println("=====0"+openid);
-        int status = vxUserMapper.insertOrUpdateByOpenid(openid, nickName, userAvatarUrl);
+        VxUser vxUser = vxUserMapper.selectById(openid);
         
-        if(status<=0){
+        if(vxUser == null){
             return null;
         }else {
-            return VxUser.builder().openid(openid).nickName(nickName).userAvatarUrl(userAvatarUrl).build();
+            return vxUser;
         }
 
     }

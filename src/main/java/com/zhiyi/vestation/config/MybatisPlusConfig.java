@@ -17,7 +17,7 @@ public class MybatisPlusConfig {
     public PaginationInterceptor paginationInterceptor() {
         return new PaginationInterceptor();
     }
-    /**
+    /**1
      * 逻辑删除配置
      * @return
      */

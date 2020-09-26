@@ -7,6 +7,7 @@ import com.zhiyi.vestation.utils.ImgUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,8 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public Map<String, Object> uploadImage(byte[] image) {
-        return ImgUtil.uploadImg(image);
+//        return ImgUtil.uploadImg(image);
+        return new HashMap<>();
     }
 
     /**
@@ -39,6 +41,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public ResultStatus delImage(String key) {
-        return ImgUtil.delete(key);
+//        return ImgUtil.delete(key);
+        return new ResultStatus();
     }
 }

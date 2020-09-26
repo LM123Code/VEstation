@@ -1,10 +1,8 @@
 package com.zhiyi.vestation.service;
 
 import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.pojo.VxUser;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.elasticsearch.common.recycler.Recycler;
 
 
 import java.util.List;
@@ -26,11 +24,9 @@ public interface VxUserService extends IService<VxUser> {
      * @param appid 小程序唯一标识
      * @param secret
      * @param js_code 登陆凭证
-     * @param userAvatarUrl 头像地址
-     * @param nickName 昵称
      * @return
      */
-    VxUser login(String appid, String secret, String js_code, String userAvatarUrl, String nickName);
+    VxUser login(String appid, String secret, String js_code);
 
     /**
      * 获取vxUser的指定属性
