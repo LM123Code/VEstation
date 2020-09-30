@@ -32,6 +32,8 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
   jackson:
     date-format: yyyy-MM-dd
+  profiles:
+    active: dev
 mybatis-plus:
   global-config:
     db-config:

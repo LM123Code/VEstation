@@ -65,17 +65,18 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Override
     public ResultStatus getAllGoodsInPage(int p,String keyWorld) {
-        QueryWrapper<Goods> wrapper = new QueryWrapper<>(); //创建包装
-        wrapper.eq("exist", 1); //查询条件包装
-
-        wrapper.orderByDesc("create_date"); //根据分数倒序
-
-        Page<Goods> page = new Page<>(p,20); //分页规则，第一页，每页20个
+//        QueryWrapper<Goods> wrapper = new QueryWrapper<>(); //创建包装
+//        wrapper.eq("exist", 1); //查询条件包装
+//
+//        wrapper.orderByDesc("create_date"); //根据分数倒序
+//
+//        Page<Goods> page = new Page<>(p,20); //分页规则，第一页，每页20个
 
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        List<Goods> goods = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+//        List<Goods> goods = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+        List<Goods> goods = goodsMapper.selectGoodsByPage((p-1)*16,p*16);
         ResultStatus resultStatus = new ResultStatus();
         if (p <= 0) {
             return resultStatus.setCode("0").setMsg("参数异常");

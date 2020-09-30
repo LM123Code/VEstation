@@ -91,4 +91,11 @@ public class Comment implements Serializable {
      */
     @TableField(exist = false)
     private List<Comment> children;
+
+    /**
+     * 发布者信息
+     */
+    @TableField(exist = false) //数据库不存在的字段
+    private VxUser commentVxUser;
+
 }

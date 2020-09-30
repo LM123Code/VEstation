@@ -6,6 +6,7 @@ import cn.binarywang.wx.miniapp.api.WxMaUserService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.service.VxUserService;
+import com.zhiyi.vestation.utils.HttpRequest;
 import kotlin.Result;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class VxUserController {
     HttpSession httpSession;
 
 
+
     /**
      * 登录方法
      *
@@ -54,14 +56,55 @@ public class VxUserController {
         if (loginPojo.getJs_code() == null && loginPojo.getJs_code().length() == 0) {
             return resultStatus.setCode("0").setMsg("参数异常");
         }
-        VxUser vxUser= vxUserService.login("wx16428bb434005c77", "a5624146cbb42bb87c674bb695f4bf1e",
+        VxUser vxUser= vxUserService.login("wx16428bb434005c77", "9b11d1ddc1ae84b7bc3edfdfdb9a714a",
                 loginPojo.getJs_code());
+
         httpSession.setAttribute("vxUser",vxUser);
-        if (Objects.isNull(vxUser)) {
-            return resultStatus.setCode("700").setMsg("新用户登录");
+        String id = httpSession.getId();
+        if (vxUser.getCreatTime() == null) {
+            return resultStatus.setCode("700").setMsg(id);
         }
-        return resultStatus.setData("200").setMsg("登录成功").setData(vxUser);
+        return resultStatus.setCode("200").setMsg(id).setData(vxUser);
     }
+
+
+    @PostMapping("/addVxUser")
+    public ResultStatus addVxUser(@RequestBody  VxUser vxUser){
+        VxUser sessionVxUser = (VxUser) httpSession.getAttribute("vxUser");
+        vxUser.setCreatTime(System.currentTimeMillis());
+        vxUser.setUpdateTime(System.currentTimeMillis());
+        vxUser.setOpenid(sessionVxUser.getOpenid());
+        boolean save = vxUserService.save(vxUser);
+
+        if (save){
+            httpSession.setAttribute("vxUser",vxUser);
+            return ResultStatus.builder().code("200").msg("增加成功").build();
+        }else {
+            return ResultStatus.builder().code("701").msg("添加失败").build();
+        }
+    }
+
+    @PostMapping("/updateVxUser")
+    public ResultStatus updateVxUser(@RequestBody  VxUser vxUser){
+        VxUser sessionVxUser = (VxUser) httpSession.getAttribute("vxUser");
+        vxUser.setOpenid(sessionVxUser.getOpenid());
+        boolean b = vxUserService.updateById(vxUser);
+        if (b) {
+            return ResultStatus.builder().code("200").msg("保存成功").build();
+        }else {
+            return ResultStatus.builder().code("702").msg("保存失败").build();
+        }
+    }
+
+
+    @PostMapping("/certification")
+    public ResultStatus identifyCertificate(@RequestBody VxUser vxUser) {
+        VxUser sessionVxUser = (VxUser) httpSession.getAttribute("vxUser");
+        vxUser.setOpenid(sessionVxUser.getOpenid());
+        return vxUserService.updateUserInfo(vxUser);
+    }
+
+
 
     /**
      * 根据用户openid查询用户信息
@@ -156,10 +199,7 @@ public class VxUserController {
      * @return
      */
 
-    @PutMapping ("/certification")
-    public ResultStatus identifyCertificate(@RequestBody VxUser vxUser) {
-       return vxUserService.updateUserInfo(vxUser);
-    }
+
 
 }
 

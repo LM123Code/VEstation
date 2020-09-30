@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiyi.vestation.mapper.JobMapper">
+    <resultMap id="JobsInfo" type="com.zhiyi.vestation.pojo.Job">
+        <id column="job_id" property="jobId" jdbcType="INTEGER"></id>
+        <result column="job_title" property="jobTitle" jdbcType="VARCHAR"></result>
+        <result column="job_class" property="jobClass" jdbcType="VARCHAR"></result>
+        <result column="job_desc" property="jobDesc" jdbcType="VARCHAR"></result>
+        <result column="job_price" property="jobPrice" jdbcType="DECIMAL"></result>
+        <result column="images" property="images" jdbcType="VARCHAR"></result>
+        <result column="create_date" property="createDate" jdbcType="DATE"></result>
+        <result column="address" property="address" jdbcType="VARCHAR"></result>
+        <result column="views" property="views" jdbcType="INTEGER"></result>
+        <result column="openid" property="openid" jdbcType="VARCHAR"></result>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"></result>
+        <association property="vxUser" javaType="com.zhiyi.vestation.pojo.VxUser">
+            <result column="openid" property="openid" jdbcType="VARCHAR"></result>
+            <result column="nick_name" property="nickName" jdbcType="VARCHAR"></result>
+            <result column="user_avatar_url" property="userAvatarUrl" jdbcType="VARCHAR"></result>
+            <result column="school_exit" property="schoolExit" jdbcType="INTEGER"></result>
+            <result column="company_exit" property="companyExit" jdbcType="INTEGER"></result>
+            <result column="school_name" property="schoolName" jdbcType="VARCHAR"></result>
+            <result column="school_major" property="schoolMajor" jdbcType="VARCHAR"></result>
+            <result column="company_name" property="companyName" jdbcType="VARCHAR"></result>
+            <result column="profession" property="profession" jdbcType="VARCHAR"></result>
+        </association>
+    </resultMap>
 
+    <select id="selectJobsByPage" resultMap="JobsInfo">
+        select j.job_id,j.job_title,j.job_class,j.job_desc,j.job_price,j.images,j.create_date,j.address,j.views,j.openid,
+        j.wechat,vx.openid,vx.nick_name,vx.user_avatar_url,vx.school_exit,vx.company_exit,
+            vx.school_name,vx.school_major,vx.company_name,vx.profession
+            from job as j
+            left join vx_user as vx
+            on j.openid = vx.openid
+            where j.exist = 1
+            order by j.create_date DESC
+            limit #{sizeBegin},#{sizeEnd}
+    </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.service.*;
+import com.zhiyi.vestation.utils.SenInfoCheckUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,8 @@ class VestationApplicationTests {
     VxUserService vxUserService;
     @Autowired
     SystemMsgService systemMsgService;
+    @Autowired
+    SenInfoCheckUtil senInfoCheckUtil;
 
     //设置APPID/AK/SK
     public static final String APP_ID = "22756032";
@@ -138,34 +141,15 @@ class VestationApplicationTests {
         System.out.println(jsonObject.toString(2));
     }
 
-    public static void downloadImage(){
+    @Test
+    void shanhuMsg(){
 
-    }
-    public static byte[] ImageToBase64ByOnline(String imgURL) {
-        ByteArrayOutputStream data = new ByteArrayOutputStream();
-        try {
-            // 创建URL
-            URL url = new URL(imgURL);
-            byte[] by = new byte[1024];
-            // 创建链接
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setConnectTimeout(5000);
-            InputStream is = conn.getInputStream();
-            // 将内容读取内存中
-            int len = -1;
-            while ((len = is.read(by)) != -1) {
-                data.write(by, 0, len);
-            }
-            // 关闭流
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // 对字节数组Base64编码
-
-        return Base64Util.decode(data.toByteArray().toString());
+        boolean 宁大力 = senInfoCheckUtil.checkMsg("操你妈");
     }
 
-
+    @Test
+    void shanhuImage(){
+//        boolean 宁大力 = SenInfoCheckUtil.checkMsg("操你妈");
+        boolean b = senInfoCheckUtil.checkImg("https://wyz.zcbglobal.com//goodsModule/uCbgwhQ5ZTBhuKX6zUQQ");
+    }
 }

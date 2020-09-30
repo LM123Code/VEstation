@@ -65,17 +65,17 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
      */
     @Override
     public ResultStatus getAllJobsInPage(int p) {
-        QueryWrapper<Job> wrapper = new QueryWrapper<>(); //创建包装
-        wrapper.eq("exist", 1); //查询条件包装
-
-        wrapper.orderByDesc("create_date"); //根据分数倒序
-
-        Page<Job> page = new Page<>(p,20); //分页规则，第一页，每页20个
+//        QueryWrapper<Job> wrapper = new QueryWrapper<>(); //创建包装
+//        wrapper.eq("exist", 1); //查询条件包装
+//
+//        wrapper.orderByDesc("create_date"); //根据分数倒序
+//
+//        Page<Job> page = new Page<>(p,20); //分页规则，第一页，每页20个
 
         /**
          * 应该从ES中查询，上述是从mysql查询
          */
-        List<Job> jobs = addVxUser(baseMapper.selectPage(page, wrapper).getRecords());//查询并获取记录
+        List<Job> jobs = jobMapper.selectJobsByPage((p-1)*16,p*16);//查询并获取记录
 
         ResultStatus resultStatus = new ResultStatus();
         if (p <= 0) {

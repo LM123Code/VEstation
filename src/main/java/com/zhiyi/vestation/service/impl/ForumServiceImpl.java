@@ -99,7 +99,7 @@ public class ForumServiceImpl extends ServiceImpl<ForumMapper, Forum> implements
     @Override
     public Forum selectOpenid(int forumId) {
         QueryWrapper<Forum> publishOpenidWrapper = new QueryWrapper<>();
-        publishOpenidWrapper.select("openid","like_num","comment_unm").eq("forum_id",forumId);
+        publishOpenidWrapper.select("openid","like_num","comment_num").eq("forum_id",forumId);
         Forum forum = baseMapper.selectOne(publishOpenidWrapper);
         return forum;
     }

@@ -47,7 +47,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             comment.setChildren(findChildren(comment, comments));  //查出二级评论
             return comment;
         }).map(comment -> {
-            comment.setVxUser(vxUserService.selectByWrapper(comment.getCommentOpenid()));  //查询出评论者的信息
+            comment.setVxUser(vxUserService.selectByWrapper(comment.getPublishOpenid()));  //查询出评论者的信息
             return comment;
         }).sorted((comment1, comment2) -> {
             return comment1.getCreateDate().before(comment2.getCreateDate())? -1 : 1;
@@ -60,9 +60,30 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             return resultStatus.setCode("1").setMsg("没有数据");
         }
         return resultStatus.setData(firstComments).setMsg("ok").setCode("200");
-
     }
-
+    /**
+     * 递归查询 查询出每个评论的子评论
+     * @param comment
+     * @param comments
+     * @return
+     */
+    private List<Comment> findChildren(Comment comment, List<Comment> comments) {
+        List<Comment> children = comments.stream().filter(commentItem -> {
+            return Integer.parseInt(commentItem.getReplyId().trim()) == comment.getCommetId();
+        }).map(commentItem -> {
+            commentItem.setChildren(findChildren(commentItem, comments));
+            return commentItem;
+        }).map(commentItem -> {
+            commentItem.setVxUser(vxUserService.selectByWrapper(commentItem.getPublishOpenid()));  //查询出评论者的信息
+            return commentItem;
+        }).map(commentItem -> {
+            commentItem.setCommentVxUser(vxUserService.selectByWrapper(commentItem.getPublishOpenid()));  //查询出评论者的信息
+            return commentItem;
+        }).sorted((comment1,comment2) ->{
+            return comment1.getCreateDate().before(comment2.getCreateDate())? -1 : 1;
+        }).collect(Collectors.toList());
+        return children;
+    }
     /**
      * 评论功能
      * @param comment 评论记录
@@ -87,6 +108,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         int insert = baseMapper.insert(comment);
         return insert > 0? new Status(200,"评论成功") : new Status(0,"评论失败");
     }
+
+
 
     /**
      * 查询评论信息
@@ -121,24 +144,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
            return resultStatus.setCode("1").setMsg("没有数据");
         }
         return resultStatus.setData(commentMessage).setMsg("ok").setCode("200");
-    }
-
-    /**
-     * 递归查询 查询出每个评论的子评论
-     * @param comment
-     * @param comments
-     * @return
-     */
-    private List<Comment> findChildren(Comment comment, List<Comment> comments) {
-        List<Comment> children = comments.stream().filter(commentItem -> {
-            return Integer.parseInt(commentItem.getReplyId().trim()) == comment.getCommetId();
-        }).map(commentItem -> {
-            commentItem.setChildren(findChildren(commentItem, comments));
-            return commentItem;
-        }).sorted((comment1,comment2) ->{
-            return comment1.getCreateDate().before(comment2.getCreateDate())? -1 : 1;
-        }).collect(Collectors.toList());
-        return children;
     }
 
     /**

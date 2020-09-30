@@ -4,6 +4,8 @@ import com.zhiyi.vestation.pojo.Goods;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -14,5 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface GoodsMapper extends BaseMapper<Goods> {
-
+    public List<Goods> selectGoodsByPage(int sizeBegin, int sizeEnd);
 }

@@ -104,6 +104,14 @@ public class Goods implements Serializable {
     @TableLogic
     private Boolean exist;
 
+
+    private String goodsType;
+
+    /**
+     * 是否存在,0旧，1新的
+     */
+    private String isNew;
+
     /**
      * 发布者
      */

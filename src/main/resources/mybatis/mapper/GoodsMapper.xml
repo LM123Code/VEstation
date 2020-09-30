@@ -2,4 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiyi.vestation.mapper.GoodsMapper">
 
+    <resultMap id="goodsInfo" type="com.zhiyi.vestation.pojo.Goods">
+        <id column="goods_id" property="goodsId" jdbcType="VARCHAR"></id>
+        <result column="goods_desc" property="goodsDesc" jdbcType="VARCHAR"></result>
+        <result column="goods_title" property="goodsTitle" jdbcType="VARCHAR"></result>
+        <result column="goods_urls" property="goodsUrls" jdbcType="VARCHAR"></result>
+        <result column="goods_price" property="goodsPrice" jdbcType="DECIMAL"></result>
+        <result column="submit_address" property="submitAddress" jdbcType="VARCHAR"></result>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"></result>
+        <result column="views" property="views" jdbcType="INTEGER"></result>
+        <result column="openid" property="openid" jdbcType="VARCHAR"></result>
+        <result column="exist" property="exist" jdbcType="INTEGER"></result>
+        <result column="is_new" property="isNew" jdbcType="VARCHAR"></result>
+        <result column="goods_type" property="goodsType" jdbcType="VARCHAR"></result>
+        <association property="vxUser" javaType="com.zhiyi.vestation.pojo.VxUser">
+            <result column="openid" property="openid" jdbcType="VARCHAR"></result>
+            <result column="nick_name" property="nickName" jdbcType="VARCHAR"></result>
+            <result column="user_avatar_url" property="userAvatarUrl" jdbcType="VARCHAR"></result>
+            <result column="school_exit" property="schoolExit" jdbcType="INTEGER"></result>
+            <result column="company_exit" property="companyExit" jdbcType="INTEGER"></result>
+            <result column="school_name" property="schoolName" jdbcType="VARCHAR"></result>
+            <result column="school_major" property="schoolMajor" jdbcType="VARCHAR"></result>
+            <result column="company_name" property="companyName" jdbcType="VARCHAR"></result>
+            <result column="profession" property="profession" jdbcType="VARCHAR"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectGoodsByPage" resultMap="goodsInfo">
+        select g.goods_id,g.goods_desc,g.goods_title,g.goods_urls,g.goods_price,g.submit_address,g.create_date,g.views,
+            g.openid,g.exist,g.is_new,g.goods_type,vx.openid,vx.nick_name,vx.user_avatar_url,vx.school_exit,vx.company_exit,
+            vx.school_name,vx.school_major,vx.company_name,vx.profession
+            from goods as g
+            left join vx_user as vx
+            on g.openid = vx.openid
+            where g.exist = 1
+            order by g.create_date DESC
+            limit #{sizeBegin},#{sizeEnd}
+    </select>
 </mapper>

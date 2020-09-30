@@ -1,14 +1,14 @@
 package com.zhiyi.vestation.controller;
 
 
-import com.zhiyi.vestation.pojo.Goods;
-import com.zhiyi.vestation.pojo.Job;
-import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.Status;
+import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.service.GoodsService;
+import com.zhiyi.vestation.utils.SenInfoCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +26,12 @@ public class GoodsController {
     @Autowired
     GoodsService goodsService;  //注入goods的service对象
 
+    @Autowired
+    HttpSession httpSession;
+
+    @Autowired
+    SenInfoCheckUtil senInfoCheckUtil;
+
     /**
      * 获取首页推荐的商品列表20个
      * @return Goods对象列表
@@ -34,6 +40,49 @@ public class GoodsController {
     @GetMapping("/recommendGoods")
     public ResultStatus getRecommendGoods(){
         return goodsService.getRecommendGoods();
+    }
+
+    @PostMapping("addGood")
+    public ResultStatus addGood(@RequestBody Goods goods){
+        VxUser sessionVxUser = (VxUser) httpSession.getAttribute("vxUser");
+        goods.setOpenid(sessionVxUser.getOpenid());
+        goods.setViews(0);
+        goods.setCreateDate(new Date());
+
+        /**
+         * 这里要对goods中的图片 以及文章的tittle做检测
+         */
+
+        boolean b = senInfoCheckUtil.checkMsg(goods.getGoodsTitle());
+        if (!b) {
+            return ResultStatus.builder().code("709").msg("文本包含敏感数据").build();
+        }
+        boolean b1 = senInfoCheckUtil.checkMsg(goods.getGoodsDesc());
+        if (!b1) {
+            return ResultStatus.builder().code("709").msg("文本包含敏感数据").build();
+        }
+        boolean b2 = senInfoCheckUtil.checkMsg(goods.getContact());
+        if (!b2) {
+            return ResultStatus.builder().code("709").msg("文本包含敏感数据").build();
+        }
+
+        //分割一下
+        String goodsUrls = goods.getGoodsUrls();
+        String substringUrls = goodsUrls.substring(1, goodsUrls.length() - 1);
+        String[] split = substringUrls.split(",");
+        for (String url: split) {
+            String subUrl = url.substring(1, url.length() - 1);
+            boolean b3 = senInfoCheckUtil.checkImg(subUrl);
+            if (!b3){
+                return ResultStatus.builder().code("708").msg("图片包含敏感数据").build();
+            }
+        }
+        boolean save = goodsService.save(goods);
+        if (save){
+            return ResultStatus.builder().code("200").msg("添加成功").build();
+        }else {
+            return ResultStatus.builder().code("706").msg("添加失败").build();
+        }
     }
 
     /**
@@ -45,6 +94,18 @@ public class GoodsController {
     @GetMapping("/allGoods")
     public ResultStatus getAllGoodsInPage(int p){
         return goodsService.getAllGoodsInPage(p,null);
+    }
+
+    @GetMapping("/viewGood")
+    public ResultStatus viewGood(int goodId){
+        Goods goods = goodsService.getById(goodId);
+        goods.setViews(goods.getViews() + 1);
+        boolean b = goodsService.updateById(goods);
+        if (b) {
+            return ResultStatus.builder().code("200").msg("浏览+1").build();
+        }else {
+            return ResultStatus.builder().code("705").msg("浏览+1失败").build();
+        }
     }
 
     /**

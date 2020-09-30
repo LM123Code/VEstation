@@ -1,14 +1,11 @@
 package com.zhiyi.vestation.service.impl;
 
 import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.Status;
 import com.zhiyi.vestation.service.ImageService;
-import com.zhiyi.vestation.utils.ImgUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

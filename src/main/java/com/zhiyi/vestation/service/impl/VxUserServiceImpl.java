@@ -8,11 +8,13 @@ import com.zhiyi.vestation.mapper.VxUserMapper;
 import com.zhiyi.vestation.service.ForumService;
 import com.zhiyi.vestation.service.VxUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhiyi.vestation.utils.AuthUtil;
 import com.zhiyi.vestation.utils.HttpRequest;
 import org.apache.ibatis.annotations.Param;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
@@ -34,6 +36,8 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
     @Autowired
     ForumService forumService;
 
+    @Autowired
+    AuthUtil authUtil;
 
     /**
      * 登录方法
@@ -43,6 +47,7 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
      * @param js_code 登陆凭证
      * @return
      */
+
     @Override
     public VxUser login(String appid, String secret, String js_code) {
         //小程序唯一标识   (在微信小程序管理后台获取)
@@ -63,13 +68,60 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
 //        插入或更新用户
         System.out.println("=====0"+openid);
         VxUser vxUser = vxUserMapper.selectById(openid);
-        
+
         if(vxUser == null){
-            return null;
+            vxUser = new VxUser();
+            //新用户
+            vxUser.setOpenid(openid);
+            return vxUser;
         }else {
             return vxUser;
         }
+    }
 
+    /**
+     * 更新用户信息
+     * @param vxUser
+     * @return
+     */
+    @Override
+    public ResultStatus updateUserInfo(VxUser vxUser) {
+        boolean isAuth = false;
+        //这里要判断一下是学生认证还是老师认证
+        if (vxUser.getCompanyName() != null){
+            boolean b = authUtil.authIdentify(vxUser.getRealName(), vxUser.getCompanyName(), vxUser.getProfession(), vxUser.getCompanyUrl());
+            if (b) {
+                vxUser.setCompanyExit(1);
+                isAuth = true;
+            }else {
+                vxUser.setCompanyExit(2);
+            }
+            //职场认证
+        }else if(vxUser.getSchoolName() != null){
+
+            //校园认证
+            boolean b = authUtil.authIdentify(vxUser.getRealName(), vxUser.getSchoolName(), vxUser.getSchoolMajor(), vxUser.getSchoolUrl());
+            if (b) {
+                vxUser.setSchoolExit(1);
+                isAuth = true;
+            }else {
+                vxUser.setSchoolExit(2);
+            }
+        }
+
+        UpdateWrapper<VxUser> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("openid",vxUser.getOpenid());
+        int update = baseMapper.update(vxUser, updateWrapper);
+        if (!isAuth) {
+            return ResultStatus.builder().code("705").msg("认证失败").build();
+        }
+        ResultStatus resultStatus = new ResultStatus();
+        if (vxUser == null || vxUser.getOpenid() == null) {
+            return resultStatus.setCode("800").setMsg("参数异常");
+        }else if (update <= 0) {
+            return resultStatus.setMsg("更新失败").setCode("801");
+        }
+        return resultStatus.setCode("200").setMsg("ok");
     }
 
     /**
@@ -196,24 +248,7 @@ public class VxUserServiceImpl extends ServiceImpl<VxUserMapper, VxUser> impleme
 
     }
 
-    /**
-     * 更新用户信息
-     * @param vxUser
-     * @return
-     */
-    @Override
-    public ResultStatus updateUserInfo(VxUser vxUser) {
-        UpdateWrapper<VxUser> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("openid",vxUser.getOpenid());
-        int update = baseMapper.update(vxUser, updateWrapper);
-        ResultStatus resultStatus = new ResultStatus();
-        if (vxUser == null || vxUser.getOpenid() == null) {
-            return resultStatus.setCode("0").setMsg("参数异常");
-        }else if (update <= 0) {
-            return resultStatus.setMsg("更新失败").setCode("1");
-        }
-        return resultStatus.setCode("200").setMsg("ok");
-    }
+
 
     /**
      * 查询用户是否学生身份认证

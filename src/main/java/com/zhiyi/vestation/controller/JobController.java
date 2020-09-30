@@ -1,13 +1,14 @@
 package com.zhiyi.vestation.controller;
 
 
-import com.zhiyi.vestation.pojo.Job;
-import com.zhiyi.vestation.pojo.ResultStatus;
-import com.zhiyi.vestation.pojo.Status;
+import com.zhiyi.vestation.pojo.*;
 import com.zhiyi.vestation.service.JobService;
+import com.zhiyi.vestation.utils.SenInfoCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,55 @@ public class JobController {
 
     @Autowired
     JobService jobService; //注入Job的service对象
+
+    @Autowired
+    HttpSession httpSession;
+
+    @Autowired
+    SenInfoCheckUtil senInfoCheckUtil;
+
+    @PostMapping("/addJob")
+    public ResultStatus addGood(@RequestBody Job job){
+        VxUser sessionVxUser = (VxUser) httpSession.getAttribute("vxUser");
+        job.setOpenid(sessionVxUser.getOpenid());
+        job.setViews(0);
+        job.setCreateDate(new Date());
+
+        /**
+         * 这里要对goods中的图片 以及文章的tittle做检测
+         */
+
+        boolean b = senInfoCheckUtil.checkMsg(job.getJobTitle());
+        if (!b) {
+            return ResultStatus.builder().code("709").msg("文本包含敏感数据").build();
+        }
+        boolean b1 = senInfoCheckUtil.checkMsg(job.getJobDesc());
+        if (!b1) {
+            return ResultStatus.builder().code("709").msg("文本包含敏感数据").build();
+        }
+        boolean b2 = senInfoCheckUtil.checkMsg(job.getWechat());
+        if (!b2) {
+            return ResultStatus.builder().code("709").msg("文本包含敏感数据").build();
+        }
+
+        //分割一下
+        String jobsUrls = job.getImages();
+        String substringUrls = jobsUrls.substring(1, jobsUrls.length() - 1);
+        String[] split = substringUrls.split(",");
+        for (String url: split) {
+            String subUrl = url.substring(1, url.length() - 1);
+            boolean b3 = senInfoCheckUtil.checkImg(subUrl);
+            if (!b3){
+                return ResultStatus.builder().code("708").msg("图片包含敏感数据").build();
+            }
+        }
+        boolean save = jobService.save(job);
+        if (save){
+            return ResultStatus.builder().code("200").msg("添加成功").build();
+        }else {
+            return ResultStatus.builder().code("706").msg("添加失败").build();
+        }
+    }
 
     /**
      * 获取首页工作推荐
